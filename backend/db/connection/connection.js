@@ -1,16 +1,19 @@
 import path from "path";
 import mongoose from "mongoose";
+import { config } from "dotenv";
+import { fileURLToPath  } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-
-/* require("dotenv").config({
+config({
   path: path.join(__dirname, "../../config/.env"),
-  override: true,
+  override: true
 });
 
-const { MONGO_URL } = process.env; */
+const { MONGO_URL } = process.env;
 
-const MONGO_URL = "mongodb+srv://benceszilvassy91:dedvex-quCtax-1zubbo@cluster0.6usurse.mongodb.net/sportDb"
+//const MONGO_URL = "mongodb+srv://benceszilvassy91:dedvex-quCtax-1zubbo@cluster0.6usurse.mongodb.net/sportDb"
 
 let connection;
 
