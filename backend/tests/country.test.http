@@ -1,0 +1,11 @@
+GET http://localhost:5000/api/countries
+
+###
+
+GET http://localhost:5000/api/countries/england/39
+
+###
+
+GET http://localhost:5000/api/countries/england/39/standings
+
+###
