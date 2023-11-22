@@ -1,9 +1,9 @@
 import express from "express";
 const router = express.Router();
 
-const headers = {
-	"x-rapidapi-host": "v3.football.api-sports.io",
-	"x-rapidapi-key": "f5507ae68a7fbb3daa338d43fc2f951f"
+const liveScoreKeys = {
+	key: "jTOINGjDJbOFpJbb",
+	secretKey: "PROUA1CySxYZqpeJi2s5ILJsWx7mhix7"
 }
 
 // GET all countries
@@ -18,21 +18,17 @@ router.get("/", async (req, res) => {
 	} catch (error) {
 		console.log(error);
 	}
-
 })
 
 // GET all leagues in a country
-router.get("/:country", async (req, res) => {
-	const country = req.params.country;
-	//console.log(country);
+router.get("/:leagueId", async (req, res) => {
+	const leagueId = req.params.leagueId;
+	console.log(leagueId);
 	try {
-		const resp = await fetch(`https://v3.football.api-sports.io/leagues?country=${country}&season=2023`, {
-			method: "GET",
-			headers: headers
-		});
-		const countries = await resp.json();
-		console.log(countries);
-		res.send(countries);
+		const resp = await fetch(`https://livescore-api.com/api-client/fixtures/matches.json?&key=${liveScoreKeys.key}&secret=${liveScoreKeys.secretKey}&competition_id=${leagueId}`);
+		const league = await resp.json();
+		console.log(league);
+		res.json({league});
 	} catch(error) {
 		console.log(error);
 	}

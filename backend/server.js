@@ -2,7 +2,7 @@ import express from "express";
 import { createConnectionString, getConnectionState, isConnected, isDisconnected, connect, disconnect } from "./db/connection/connection.js";
 import {logger} from "./middlewares/logger.js";
 import mongoose from "mongoose";
-import countryRouter from "./routes/country-router.js"
+import bettingRouter from "./routes/betting-router.js"
 
 const app = express();
 const PORT = 5000;
@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(logger);
 
 // API Routes
-app.use("/api/countries", countryRouter)
+app.use("/api/betting", bettingRouter)
 
 // Landing URL
 app.get("/", (req, res)=> {
