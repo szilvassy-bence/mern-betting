@@ -18,7 +18,7 @@ export default function Countries() {
   function betHome(e, match, better) {
 
 		console.log(e.target.id);
-		match.betId = e.target.id;
+		//  match.betId = e.target.id;
 		match.betterTeam = better;
 		setBetCurrent(match);
   }
