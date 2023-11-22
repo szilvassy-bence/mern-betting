@@ -16,10 +16,8 @@ export default function Countries() {
   }, []);
 
   function betHome(e, match, better) {
-
-		console.log(e.target.id);
-		//  match.betId = e.target.id;
-		match.betterTeam = better;
+		//console.log(e.target.id);
+    match.betterTeam = better;
 		setBetCurrent(match);
   }
 
@@ -77,13 +75,16 @@ export default function Countries() {
                           >
                             {match.odds.pre["1"]
                               ? match.odds.pre["1"]
-                              : "Not available yet"}
+                              : "N/A"}
                           </button>
                         </td>
                         <td>
                           <button
                             id={btnDrawOdds}
+                            onClick={(e) => betHome(e, match, 'draw')}
                             className="btn btn-outline-success"
+                            data-bs-toggle="modal"
+                            data-bs-target="#betModal"
                           >
                             {match.odds.pre["X"] ? match.odds.pre["X"] : "N/A"}
                           </button>
@@ -91,7 +92,10 @@ export default function Countries() {
                         <td>
                           <button
                             id={btnAwayOdds}
+                            onClick={(e) => betHome(e, match, 'away')}
                             className="btn btn-outline-success"
+                            data-bs-toggle="modal"
+                            data-bs-target="#betModal"
                           >
                             {match.odds.pre["2"] ? match.odds.pre["2"] : "N/A"}
                           </button>
