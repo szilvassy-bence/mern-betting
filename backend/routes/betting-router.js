@@ -21,7 +21,31 @@ const liveScoreKeys = {
 })
 */
 // GET all leagues in a country
+/*router.get("/:leagueId", async (req, res) => {
+	const leagueId = req.params.leagueId;
+	console.log(leagueId);
+	try {
+		const resp = await fetch(`https://livescore-api.com/api-client/fixtures/matches.json?&key=${liveScoreKeys.key}&secret=${liveScoreKeys.secretKey}&competition_id=${leagueId}`);
+		const league = await resp.json();
+		console.log(league);
+		res.json({league});
+	} catch(error) {
+		console.log(error);
+	}
+})*/
 
+//BlackjackID
+router.get("/blackjack/deckid", async (req, res) => {
+	console.log("asd")
+	try {
+		const resp = await fetch(`https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`)
+		const deckId = await resp.json();
+		console.log(deckId);
+		res.send(deckId);
+	} catch (error) {
+		console.log(error);
+	}
+})
 
 // GET a league
 router.get("/league/list", async (req, res) => {
@@ -66,6 +90,9 @@ router.get("/unique/:leagueId", async (req, res) => {
 		console.log(error);
 	}
 })
+
+
+
 
 
 export default router;
