@@ -56,7 +56,7 @@ export default function Leagues ({ searchValue }) {
 
   return (
     <>
-    { id === null && filtered !== undefined ?
+    { id === null && filtered.length > 0?
       <div>
       <table>
         <thead>
