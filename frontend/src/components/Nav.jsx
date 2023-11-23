@@ -6,7 +6,7 @@ export default function Nav({ backToStarter, setSearchValue, searchValue }) {
 			<div className="navbar bg-dark navbar-expand-lg">
 				<div className="container py-3">
 				<button type="button" onClick={backToStarter}>Back</button>
-				<input type="text" value={searchValue} placeholder="Search for a League" onChange={(e) => setSearchValue(e.target.value)}/>
+				<input type="text" value={searchValue} placeholder="Search..." onChange={(e) => setSearchValue(e.target.value)}/>
 				<button type="button">Click</button>
 				</div>
 			</div>

@@ -5,6 +5,8 @@ export default function Leagues ({ searchValue }) {
   const [id, setId] = useState(null)
   const [leagues, setLeagues] = useState([])
 
+  let filtered;
+
   //Required variables for the pagination
   const [currentPage, setCurrentPage] = useState(1)
   const leaguesPerPage = 30
@@ -14,12 +16,13 @@ export default function Leagues ({ searchValue }) {
   const nPage = Math.ceil(leagues.length / leaguesPerPage)
   const numbers = [...Array(nPage + 1).keys()].slice(1)
 
-  let filtered;
-
   if(searchValue !== null || searchValue !== ""){
-    filtered = leagues.filter(league => league.name.toLowerCase().includes(searchValue))
-    console.log(filtered);
+    filtered = leagues.filter(league => league.name.toLowerCase().includes(searchValue) || league.countries[0].name.toLowerCase().includes(searchValue))
   }
+
+  const filteredRecords = filtered.slice(firstIndex, lastIndex)
+  const nPageFiltered = Math.ceil(filtered.length / leaguesPerPage)
+  const numbersFiltered = [...Array(nPageFiltered + 1).keys()].slice(1)
 
   useEffect(() => {
     fetch('/api/betting/league/list')
@@ -53,7 +56,41 @@ export default function Leagues ({ searchValue }) {
 
   return (
     <>
-    { id === null ?
+    { id === null && filtered !== undefined ?
+      <div>
+      <table>
+        <thead>
+          <th>League</th>
+          <th>Country</th>
+        </thead>
+        <tbody>
+          {filteredRecords.map((league, i) => (
+          <tr key={i}>
+            <td onClick={() => giveId(league.id)}>{league.name}</td>
+            <td>{league.countries[0].name}</td>
+          </tr>
+          ))}
+        </tbody>
+      </table>
+      <nav>
+        <ul className="pagination">
+            <li className="page-item">
+              <a href="#" className="page-link" onClick={prevPage}>Prev</a>
+            </li>
+            {
+              numbersFiltered.map((num, i) => (
+                <li className={`page-item ${currentPage === num ? 'active' : ''}`} key={i}>
+                   <a href="#" className="page-link" onClick={() => changeCurrPage(num)}>{num}</a> 
+                </li>
+              ))
+            }
+            <li className="page-item">
+              <a href="#" className="page-link" onClick={nextPage}>Next</a>
+            </li>
+        </ul>
+      </nav>
+    </div>
+    : id === null ?
       <div>
         <table>
           <thead>
