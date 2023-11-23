@@ -1,5 +1,5 @@
 
-export default function ({ goToPages }) {
+export default function StarterPage ({ goToPages }) {
 
     return (
         <>
