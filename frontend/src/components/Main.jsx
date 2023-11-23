@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import BetModal from "./BetModal";
 
-export default function Countries() {
+export default function Countries({id}) {
   const [clickedLeague, setClickedLeague] = useState(null);
   const [betCurrent, setBetCurrent] = useState({})
 
   useEffect(() => {
-    fetch("/api/betting/2")
+    fetch(`/api/betting/${id}`)
       .then((response) => response.json())
       .then((league) => {
         console.log(league.league.data.fixtures);

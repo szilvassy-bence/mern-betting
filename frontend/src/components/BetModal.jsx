@@ -43,7 +43,7 @@ export default function BetModal({ current }) {
 						<button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div className="modal-body">
-						{betted === "draw" ? `${current.home_name} / ${current.away_name} Draw` : current[`${betted}_name`]}:  Odds <br></br>
+						{betted === "draw" ? `${current.home_name} / ${current.away_name} Draw` : current[`${betted}_name`]}: {betted === "draw" ? current.odds.pre["X"] : betted === "away" ? current.odds.pre[2] : betted === "home" ? current.odds.pre[1] : null} Odds <br></br>
 						<input placeholder="Your Bet" onChange={(e) => setBetAmount(e.target.id)}></input>
 						<p>Possible outcome: {calculateOutCome(betAmount, betted)}</p>
 					</div>
