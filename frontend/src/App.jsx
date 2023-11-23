@@ -1,33 +1,28 @@
 import { useState } from 'react';
 import Nav from './components/Nav';
 import './App.css';
-import Main from "./components/Main"
 import Leagues from './components/Leagues';
+import StarterPage from './components/StarterPage';
+import Blackjack from './components/Blackjack';
+
 
 function App() {
-  const [id, setId] = useState(null)
+  const [gambleType, setGambleType] = useState(null)
 
-	function bundesliga () {
-		console.log("bundesliga clicked");
-		setId("1")
+	function backToStarter (type = null) {
+		setGambleType(type)
 	}
-
-	function premier () {
-		console.log("premier clicked");
-		setId("2")
-	}
-
-	function backToLeagues () {
-		setId(null)
-	}
-  console.log(id);
+  console.log(gambleType);
   return (
     <>
-      <Nav backToLeagues={backToLeagues}/>
-      {id === null ? 
-        <Leagues premier={premier} bundesliga={bundesliga}/>
-				:
-				<Main id={id} />
+      <Nav backToStarter={backToStarter}/>
+      
+
+      { gambleType === "sportbet" ?
+        <Leagues /> :
+        gambleType === "blackjack" ?
+        <Blackjack /> :
+        <StarterPage goToPages={backToStarter}/>
 				}
       
     </>
