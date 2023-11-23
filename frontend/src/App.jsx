@@ -8,18 +8,19 @@ import Blackjack from './components/Blackjack';
 
 function App() {
   const [gambleType, setGambleType] = useState(null)
+  const [searchValue, setSearchValue] = useState(null)
+
 
 	function backToStarter (type = null) {
 		setGambleType(type)
 	}
-  console.log(gambleType);
+
+  console.log(searchValue);
   return (
     <>
-      <Nav backToStarter={backToStarter}/>
-      
-
+      <Nav backToStarter={backToStarter} setSearchValue={setSearchValue} searchValue={searchValue}/>
       { gambleType === "sportbet" ?
-        <Leagues /> :
+        <Leagues searchValue={searchValue}/> :
         gambleType === "blackjack" ?
         <Blackjack /> :
         <StarterPage goToPages={backToStarter}/>

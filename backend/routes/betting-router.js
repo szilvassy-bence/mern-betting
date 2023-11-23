@@ -7,7 +7,7 @@ const liveScoreKeys = {
 }
 
 // GET all countries
-router.get("/", async (req, res) => {
+/*router.get("/", async (req, res) => {
 	try {
 		const resp = await fetch("https://v3.football.api-sports.io/countries", {
 			method: "GET",
@@ -19,41 +19,26 @@ router.get("/", async (req, res) => {
 		console.log(error);
 	}
 })
-
+*/
 // GET all leagues in a country
-router.get("/:leagueId", async (req, res) => {
-	const leagueId = req.params.leagueId;
-	console.log(leagueId);
-	try {
-		const resp = await fetch(`https://livescore-api.com/api-client/fixtures/matches.json?&key=${liveScoreKeys.key}&secret=${liveScoreKeys.secretKey}&competition_id=${leagueId}`);
-		const league = await resp.json();
-		console.log(league);
-		res.json({league});
-	} catch(error) {
-		console.log(error);
-	}
-})
+
 
 // GET a league
-router.get("/:country/:id", async (req, res) => {
-	const country = req.params.country;
-	const id = req.params.id;
-
+router.get("/league/list", async (req, res) => {
+	console.log("random");
 	try {
-		const resp = await fetch(`https://v3.football.api-sports.io/leagues?season=2023&id=${id}`, {
-			method: "GET",
-			headers: headers
-		});
-		const leagues = await resp.json();
-		res.send(leagues)
+		const resp = await fetch(`https://livescore-api.com/api-client/competitions/list.json?&key=jTOINGjDJbOFpJbb&secret=PROUA1CySxYZqpeJi2s5ILJsWx7mhix7`);
+		const list = await resp.json();
+		const leagues = list.data.competition.filter(comp => comp.is_league === "1")
+		return res.json(leagues)
 	} catch (err) {
-		console.log("Problem fetching");
+		console.log("Problem fetchingggg");
 	}
 })
 
 
 // GET standings 
-router.get("/:country/:id/standings", async (req, res) => {
+/*router.get("/:country/:id/standings", async (req, res) => {
 	const country = req.params.country;
 	const id = req.params.id;
 
@@ -65,7 +50,20 @@ router.get("/:country/:id/standings", async (req, res) => {
 		const leagues = await resp.json();
 		res.send(leagues)
 	} catch (err) {
-		console.log("Problem fetching");
+		console.log("Problem fetchingg");
+	}
+})*/
+
+router.get("/unique/:leagueId", async (req, res) => {
+	const leagueId = req.params.leagueId;
+	console.log(leagueId);
+	try {
+		const resp = await fetch(`https://livescore-api.com/api-client/fixtures/matches.json?&key=${liveScoreKeys.key}&secret=${liveScoreKeys.secretKey}&competition_id=${leagueId}`);
+		const league = await resp.json();
+		console.log(league);
+		res.json({league});
+	} catch(error) {
+		console.log(error);
 	}
 })
 

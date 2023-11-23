@@ -6,7 +6,7 @@ export default function Countries({id}) {
   const [betCurrent, setBetCurrent] = useState({})
 
   useEffect(() => {
-    fetch(`/api/betting/${id}`)
+    fetch(`/api/betting/unique/${id}`)
       .then((response) => response.json())
       .then((league) => {
         console.log(league.league.data.fixtures);
