@@ -3,6 +3,8 @@ import { createConnectionString, getConnectionState, isConnected, isDisconnected
 import {logger} from "./middlewares/logger.js";
 import mongoose from "mongoose";
 import bettingRouter from "./routes/betting-router.js"
+import userRouter from "./routes/user-router.js";
+import { query, validationResult } from "express-validator";
 
 const app = express();
 const PORT = 5000;
@@ -11,8 +13,11 @@ const PORT = 5000;
 app.use(express.json());
 app.use(logger);
 
-// API Routes
+// API Betting routes
 app.use("/api/betting", bettingRouter)
+
+// API USER routes
+app.use("/api/user", userRouter)
 
 // Landing URL
 app.get("/", (req, res)=> {

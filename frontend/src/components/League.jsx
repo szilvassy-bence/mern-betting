@@ -1,12 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { SearchContext } from "../contexts/SearchContext";
+import { useParams } from "react-router-dom";
 import BetModal from "./BetModal";
 
-export default function Countries({id}) {
+
+export default function League() {
+  const { id } = useParams();
+  console.log(id);
+
   const [clickedLeague, setClickedLeague] = useState(null);
-  const [betCurrent, setBetCurrent] = useState({})
+  const [betCurrent, setBetCurrent] = useState(null);
+
+  const { clickedLeagueId } = useContext(SearchContext)
+
+  //console.log(clickedLeagueId);
 
   useEffect(() => {
-    fetch(`/api/betting/unique/${id}`)
+    fetch(`/api/betting/leagues/${id}`)
       .then((response) => response.json())
       .then((league) => {
         console.log(league.league.data.fixtures);
@@ -15,10 +25,22 @@ export default function Countries({id}) {
       .catch((error) => console.log(error));
   }, []);
 
-  function betHome(e, match, better) {
-		//console.log(e.target.id);
-    match.betterTeam = better;
-		setBetCurrent(match);
+  function handleBet(e, match) {
+
+    const betSide = e.target.id.slice(4,5);
+
+    const betDetails = {
+      id: match.id,
+      betSide: betSide,
+      betOdds: match.odds.pre[betSide],
+      betTeam: betSide === "1" ? match.home_name : betSide === "X" ? "draw" : match.away_name
+    }
+
+    setBetCurrent({
+      ...match,
+      betDetails});
+
+    console.log(betCurrent);
   }
 
   return (
@@ -28,11 +50,11 @@ export default function Countries({id}) {
       ) : (
         <div className="container-fluid bg-dark">
           <div className="container py-5">
-            <h2 className="text-light">Check your todos!</h2>
+            <h2 className="text-light">List of matches</h2>
             <div className="row ">
               <table className="table caption-top table-sm table-bordered table-striped p-5">
                 <caption className="text-light">
-                  You can delete and update them!
+                  Gamble responsibly
                 </caption>
                 <thead className="table-light">
                   <tr className="table-primary align-middle">
@@ -47,9 +69,9 @@ export default function Countries({id}) {
                 </thead>
                 <tbody className="table-group-divider">
                   {clickedLeague.map((match, index) => {
-                    const btnHomeOdds = `btn-home-odds-${match.id}`;
-                    const btnDrawOdds = `btn-draw-odds-${match.id}`;
-                    const btnAwayOdds = `btn-away-odds-${match.id}`;
+                    const btnHomeOdds = `btn-1-odds-${match.id}`;
+                    const btnDrawOdds = `btn-X-odds-${match.id}`;
+                    const btnAwayOdds = `btn-2-odds-${match.id}`;
                     return (
                       <tr
                         className="table-primary align-middle"
@@ -68,20 +90,18 @@ export default function Countries({id}) {
                         <td>
                           <button
                             id={btnHomeOdds}
-                            onClick={(e) => betHome(e, match, 'home')}
+                            onClick={(e) => handleBet(e, match)}
                             className="btn btn-outline-danger mx-2"
                             data-bs-toggle="modal"
                             data-bs-target="#betModal"
                           >
-                            {match.odds.pre["1"]
-                              ? match.odds.pre["1"]
-                              : "N/A"}
+                            {match.odds.pre["1"] ? match.odds.pre["1"] : "N/A"}
                           </button>
                         </td>
                         <td>
                           <button
                             id={btnDrawOdds}
-                            onClick={(e) => betHome(e, match, 'draw')}
+                            onClick={(e) => handleBet(e, match)}
                             className="btn btn-outline-success"
                             data-bs-toggle="modal"
                             data-bs-target="#betModal"
@@ -92,7 +112,7 @@ export default function Countries({id}) {
                         <td>
                           <button
                             id={btnAwayOdds}
-                            onClick={(e) => betHome(e, match, 'away')}
+                            onClick={(e) => handleBet(e, match)}
                             className="btn btn-outline-success"
                             data-bs-toggle="modal"
                             data-bs-target="#betModal"
@@ -106,7 +126,7 @@ export default function Countries({id}) {
                   ;
                 </tbody>
               </table>
-              <BetModal current={betCurrent}/>
+              <BetModal betCurrent={betCurrent} setBetCurrent={setBetCurrent} />
             </div>
           </div>
         </div>

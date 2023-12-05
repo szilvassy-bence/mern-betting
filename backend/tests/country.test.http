@@ -9,3 +9,15 @@ GET http://localhost:5000/api/countries/england/39
 GET http://localhost:5000/api/countries/england/39/standings
 
 ###
+
+GET http://localhost:5000/api/user
+
+###
+
+GET http://localhost:5000/api/user/login
+
+###
+
+GET http://localhost:5000/api/user/register
+
+###
