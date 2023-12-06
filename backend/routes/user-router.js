@@ -86,9 +86,31 @@ router.post("/register",
 
 // TO CHECK THE LOGIN INFORMATION
 router.post("/login", async (req, res) => {
-	console.log(req.body);
+	const { email, password } = req.body;
 
-	// TO VALIDATE THE 
+	if (!email || !password) {
+		return res.status(400).json({ error: 'Email and password are required.' });
+	}
+
+	// TO VALIDATE THE EMAIL
+	try {
+		const user = await User.findOne({ email: email })
+		
+		if (!user) {
+			throw new Error("Email not found. Try again.")		
+		} 
+		if (user.password === password) {
+			console.log("success");
+			const id = user._id
+			res.status(200).json({id})
+		} else {
+			res.status(401).json({ error: 'Invalid email or password.' });
+		}
+	} catch (error) {
+		console.log(error.message);
+		const {message} = error
+		res.status(500).json({message})
+	}
 })
 
 

@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { SearchContext } from "../contexts/SearchContext";
 
 export default function Nav() {
-  const { setSearch, setSort } = useContext(SearchContext);
+  const { setSearch, setSort, setUser } = useContext(SearchContext);
 
   function onChangeInput(e) {
     setSearch(e.target.value);
@@ -12,21 +12,33 @@ export default function Nav() {
     setSort(e.target.value);
   }
 
-  function submitLogin(e) {
+  async function submitLogin(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const loginData = Object.fromEntries(formData)
     console.log(loginData);
 
     // POST THE FORM IN THE REQ.BODY
-    fetch("/api/user/login", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(loginData)
-    })
-      .then((resp) => resp.json())
-      .then((data) => console.log(data))
-      .catch(err => console.log(err))
+    try {
+      const resp = await fetch("/api/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginData)
+      });
+    
+      if (resp.ok) {
+        const data = await resp.json();
+        const {id} = data;
+        setUser(id);
+        // Handle successful login
+      } else if (resp.status === 401) {
+        throw new Error("Invalid email or password");
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 
 

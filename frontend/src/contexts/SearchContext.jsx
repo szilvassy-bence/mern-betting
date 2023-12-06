@@ -8,9 +8,10 @@ export function SearchContextComponent() {
 	const [search, setSearch] = useState(null);
 	const [sort, setSort] = useState(null);
 	const [league, setLeague] = useState(null);
+	const [user, setUser] = useState(null);
 
 
-	return <SearchContext.Provider value={{search, setSearch, sort, setSort }} >
+	return <SearchContext.Provider value={{search, setSearch, sort, setSort, user, setUser }} >
 		<Outlet />
 	</SearchContext.Provider>
 }
