@@ -60,7 +60,6 @@ router.post("/register",
 		.isLength({min:1})
 		.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/),
 
-
 	async (req, res) => {
 
 		const data = req.body;
@@ -84,5 +83,13 @@ router.post("/register",
 			return res.status(500).json(err)
 		}
 	})
+
+// TO CHECK THE LOGIN INFORMATION
+router.post("/login", async (req, res) => {
+	console.log(req.body);
+
+	// TO VALIDATE THE 
+})
+
 
 export default router

@@ -11,6 +11,7 @@ const PORT = 5000;
 
 // Middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }))
 app.use(logger);
 
 // API Betting routes

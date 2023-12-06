@@ -12,6 +12,25 @@ export default function Nav() {
     setSort(e.target.value);
   }
 
+  function submitLogin(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const loginData = Object.fromEntries(formData)
+    console.log(loginData);
+
+    // POST THE FORM IN THE REQ.BODY
+    fetch("/api/user/login", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(loginData)
+    })
+      .then((resp) => resp.json())
+      .then((data) => console.log(data))
+      .catch(err => console.log(err))
+  }
+
+
+
   return (
     <div className="container-fluid p-0" id="nav">
       <div className="navbar bg-primary navbar-expand-lg">
@@ -43,13 +62,14 @@ export default function Nav() {
               href="#"
               id="account-dropdown"
               role="button"
-              data-toggle="dropdown"
+              data-bs-toggle="dropdown"
               className="nav-link account dropdown-toggle"
               aria-haspopup="true"
             >
               <span className="menu-item-icon"></span>
               <span className="menu-item-label">Fiók</span>
             </a>
+
             <div
               className="dropdown-menu dropdown-menu-right"
               aria-labelledby="account-dropdown"
@@ -60,6 +80,7 @@ export default function Nav() {
                     id="login-form"
                     className="row needs-validation"
                     noValidate
+                    onSubmit={submitLogin}
                   >
                     <div className="form-group required has-feedback">
                       <label htmlFor="email" className="form-label">
