@@ -16,7 +16,7 @@ export function SearchContextComponent() {
 		const fetchData = async () => {
 			try {
 				const result = await fetch(`/api/user/funds/${user}`)
-				const data = await result.json()
+				const data = await result.json();
 				console.log(data);
 				setFunds(parseInt(data))
 			} catch (error) {

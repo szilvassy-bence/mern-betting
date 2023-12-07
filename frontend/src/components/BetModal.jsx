@@ -109,6 +109,7 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
 
   return betCurrent ? (
     <div
+      ref={ref}
       className="modal fade"
       id="betModal"
       tabIndex="-1"

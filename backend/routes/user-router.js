@@ -48,12 +48,13 @@ router.get("/funds/:id", async (req, res) => {
 	console.log("!!!");
 	try {
 		const user = await User.findById(id)
+		console.log(user);
 		
-		if(user.deposit){
+		if (user.deposit) {
 			console.log(user.deposit);
 			return res.status(200).json(user.deposit)
 		} else {
-			return res.status(404).json({message: "User hasn't deposited yet"})
+			return res.status(404).json("User hasn't deposited yet")
 		}
 		
 	} catch (error) {
@@ -149,6 +150,7 @@ router.post("/register",
 
 		const data = req.body;
 		data.createdAt = new Date();
+		data.deposit = 0;
 
 		const password = data.password;
 		console.log(password);

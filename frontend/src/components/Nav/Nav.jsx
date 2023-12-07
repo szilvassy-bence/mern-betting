@@ -1,11 +1,13 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { SearchContext } from "../../contexts/SearchContext";
 import { Link, useLocation } from "react-router-dom"
 import "./Nav.css";
 
 export default function Nav() {
-  const { setSearch, setSort, setUser, funds } = useContext(SearchContext);
+  const { setSearch, setSort, user, setUser, funds } = useContext(SearchContext);
   const [loginError, setLoginError] = useState(null);
+
+  const dropdownRef = useRef(0);
 
   const location = useLocation();
 
@@ -48,7 +50,7 @@ export default function Nav() {
       const { message } = err;
       setUser(null);
       setLoginError(message);
-      document.querySelector(".dropdown-menu").classList.toggle("show");
+      dropdownRef.current.classList.toggle("show");
       // INFO MESSAGE
     }
   }
@@ -99,66 +101,90 @@ export default function Nav() {
             >
               Login
             </button>
-
-            <div
-              className="dropdown-menu dropdown-menu-left p-3"
-              aria-labelledby="account-dropdown"
-            >
-              <div className="row">
-                <div className="container">
-                  <form
-                    id="login-form"
-                    className="row needs-validation"
-                    noValidate
-                    onSubmit={submitLogin}
-                  >
-                    <div className="form-group required has-feedback mb-3">
-                      <label htmlFor="email" className="form-label">
-                        E-mail
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        id="email-login"
-                        required
-                      />
+            {
+              user ? (
+                <div
+                  className="dropdown-menu dropdown-menu-left p-3"
+                  aria-labelledby="account-dropdown"
+                  ref={dropdownRef}
+                >
+                  <div className="row">
+                    <div className="container">
+                      <ul className="listgroup" aria-current="true">
+                        <li className="list-group-item">Hi, ${user}</li>
+                        <li className="list-group-item">
+                          <Link to="/account">
+                            Account
+                          </Link>
+                        </li>
+                        <li className="list-group-item" onClick={() => setUser(null)}>Log out</li>
+                      </ul>
                     </div>
-                    <div className="form-group required has-feedback mb-3">
-                      <label htmlFor="password" className="form-label">
-                        Password
-                      </label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        name="password"
-                        id="password-login"
-                        required
-                      />
-                    </div>
-                    {loginError && (
-                      <div>
-                        <p className="text-danger">{loginError}</p>
-                      </div>
-                    )}
-                    <div className="mb-3">
-                      <Link to="/user/register">
-                        Or register now!
-                      </Link>
-                    </div>
-                    <div className="form-group">
-                      <button
-                        id="btn-login"
-                        type="submit"
-                        className="btn btn-primary"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
-            </div>
+              ) : (
+                <div
+                  className="dropdown-menu dropdown-menu-left p-3"
+                  aria-labelledby="account-dropdown"
+                  ref={dropdownRef}
+                >
+                  <div className="row">
+                    <div className="container">
+                      <form
+                        id="login-form"
+                        className="row needs-validation"
+                        noValidate
+                        onSubmit={submitLogin}
+                      >
+                        <div className="form-group required has-feedback mb-3">
+                          <label htmlFor="email" className="form-label">
+                            E-mail
+                          </label>
+                          <input
+                            type="email"
+                            className="form-control"
+                            name="email"
+                            id="email-login"
+                            required
+                          />
+                        </div>
+                        <div className="form-group required has-feedback mb-3">
+                          <label htmlFor="password" className="form-label">
+                            Password
+                          </label>
+                          <input
+                            type="password"
+                            className="form-control"
+                            name="password"
+                            id="password-login"
+                            required
+                          />
+                        </div>
+                        {loginError && (
+                          <div>
+                            <p className="text-danger">{loginError}</p>
+                          </div>
+                        )}
+                        <div className="mb-3">
+                          <Link to="/user/register">
+                            Or register now!
+                          </Link>
+                        </div>
+                        <div className="form-group">
+                          <button
+                            id="btn-login"
+                            type="submit"
+                            className="btn btn-primary"
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>
