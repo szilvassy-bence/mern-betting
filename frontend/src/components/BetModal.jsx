@@ -98,7 +98,7 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
           <div className="modal-body">
             <h3>It's time to make your bet!</h3>
             <form className="form" onSubmit={onSubmit} id="form-betModal">
-              <label htmlFor="form-label">Result</label>
+              <label htmlFor="form-select-betModal"  className="form-label">Result</label>
               <select
                 name="betSide"
                 onChange={onSelectChange}
@@ -139,7 +139,7 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
                 id="input-betOdds"
                 value={betCurrent.betDetails.betOdds}
               />
-              <label htmlFor="input-betOdds" className="form-label">
+              <label htmlFor="input-betWin" className="form-label">
                 Possible win
               </label>
               <input
@@ -152,6 +152,7 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
               />
               <button
                 type="button"
+                id="betModal-cancel"
                 className="btn btn-secondary mx-3"
                 data-bs-dismiss="modal"
 								onClick={handleClose}
@@ -160,6 +161,7 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
               </button>
               <button
                 type="submit"
+                id="betModal-submit"
                 data-bs-dismiss="modal"
                 className="btn btn-primary"
               >

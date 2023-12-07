@@ -89,8 +89,8 @@ router.patch("/deposit/:id", async (req, res) => {
 	}*/
 })
 
-// to make a registration
-// i need the model's required information sent by req.body
+// POST A REGISTRATION
+// REQ BODY
 router.post("/register",
 	body("firstName", "First name must not be empty, must have at least two characters, the first character must be a character from a-z or A-Z.")
 		.trim()
@@ -158,8 +158,6 @@ router.post("/register",
 				}
 			});
 		});
-
-
 	})
 
 // TO CHECK THE LOGIN INFORMATION
