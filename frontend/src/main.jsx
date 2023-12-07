@@ -17,7 +17,7 @@ import { SearchContextComponent } from "./contexts/SearchContext";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  //<React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<SearchContextComponent />}>
@@ -42,5 +42,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </Route>
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
+  //</React.StrictMode>
 );

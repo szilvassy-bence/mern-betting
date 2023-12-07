@@ -1,11 +1,14 @@
 import { useContext, useState } from "react";
 import { SearchContext } from "../../contexts/SearchContext";
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import "./Nav.css";
 
 export default function Nav() {
   const { setSearch, setSort, setUser } = useContext(SearchContext);
   const [loginError, setLoginError] = useState(null);
+
+  const location = useLocation();
+
 
   function onChangeInput(e) {
     setSearch(e.target.value);
@@ -55,13 +58,13 @@ export default function Nav() {
       <div className="navbar bg-primary navbar-expand-lg">
         <div className="container py-3">
           <button type="button">Back</button>
-          <input
+          {location.pathname !== '/casino/blackjack' && <input
             className="form-control w-25"
             type="text"
             onChange={onChangeInput}
             placeholder="Search..."
-          />
-          <select
+          />}
+          {location.pathname !== '/casino/blackjack' && <select
             onChange={onChangeSelect}
             className="form-select w-25"
             name="nav-select"
@@ -75,7 +78,7 @@ export default function Nav() {
               <option value="country-az">A to Z</option>
               <option value="country-za">Z to A</option>
             </optgroup>
-          </select>
+          </select>}
           <div className="dropdown" id="login-dropdown">
             <button
               type="button"

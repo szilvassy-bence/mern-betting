@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 export default function GameEndModal({ blackjackState, betAmount, playerCardValues, dealerCardValues, handleStartNewGame }){
     return(
@@ -60,8 +61,8 @@ export default function GameEndModal({ blackjackState, betAmount, playerCardValu
                     )}
                 </div>
                 <>
-                    <button onClick={handleStartNewGame}>Start new game</button>
-                    <button>Back to main page</button>
+                    <button className="home-btn" onClick={handleStartNewGame}>Start new game</button>
+                    <button><Link to="/">Back to main page</Link></button>
                 </>
             </div>
         </div>
