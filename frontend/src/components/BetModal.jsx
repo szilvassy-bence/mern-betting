@@ -40,50 +40,41 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
     data.user = user.id;
     console.log(data);
 
-    if (data.betAmount > funds) {
-      setBetGreater(!betGreater);
+    const resp = await fetch("/api/betting/league/new", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data }),
+    });
+    const currentBet = await resp.json();
+    const betId = currentBet.bet._id;
+
+    const bet = await fetch(`/api/user/deposit/bet/${user.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        deposit: funds - parseInt(data.betAmount),
+        bet: betId,
+      }),
+    });
+
+    setFunds(funds - parseInt(data.betAmount));
+
+    if (bet.status === 200) {
+      console.log("Successful patch");
     } else {
-      /*console.log(typeof funds);
-      console.log(data.betAmount)*/
-      setBetGreater(false);
+      console.log("Problem fetching");
+    }
 
-      const resp = await fetch("/api/betting/league/new", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ data }),
-      });
-      const currentBet = await resp.json();
-      const betId = currentBet.bet._id;
-
-      const bet = await fetch(`/api/user/deposit/bet/${user.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          deposit: funds - parseInt(data.betAmount),
-          bet: betId,
-        }),
-      });
-
-      setFunds(funds - parseInt(data.betAmount));
-
-      if (bet.status === 200) {
-        console.log("Successful patch");
-      } else {
-        console.log("Problem fetching");
-      }
-
-      if (resp.status === 200) {
-        console.log("Successful post method");
-      } else {
-        console.log("Problem sending bet");
-      }
+    if (resp.status === 200) {
+      console.log("Successful post method");
+    } else {
+      console.log("Problem sending bet");
     }
   }
 
   // on select element
   function onSelectChange(e) {
     const betSide = e.target.value;
-    //console.log(betSide);
 
     setBetCurrent({
       ...betCurrent,

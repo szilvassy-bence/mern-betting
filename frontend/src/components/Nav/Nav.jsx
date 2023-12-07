@@ -24,7 +24,6 @@ export default function Nav() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const loginData = Object.fromEntries(formData);
-    //console.log(loginData);
 
     // POST THE FORM IN THE REQ.BODY
     try {
@@ -46,7 +45,6 @@ export default function Nav() {
         throw new Error("Something went wrong");
       }
     } catch (err) {
-      //console.error(err.message);
       const { message } = err;
       setUser(null);
       setLoginError(message);

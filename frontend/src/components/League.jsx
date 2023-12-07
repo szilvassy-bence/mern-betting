@@ -11,10 +11,6 @@ export default function League() {
   const [clickedLeague, setClickedLeague] = useState(null);
   const [betCurrent, setBetCurrent] = useState(null);
 
-  const { clickedLeagueId } = useContext(SearchContext)
-
-  //console.log(clickedLeagueId);
-
   useEffect(() => {
     fetch(`/api/betting/leagues/${id}`)
       .then((response) => response.json())
