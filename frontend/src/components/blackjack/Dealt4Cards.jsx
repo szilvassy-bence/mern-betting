@@ -20,8 +20,13 @@ export default function Dealt4Cards( {deckid, bet} ) {
 
     function getCardValues(card1, card2){
         console.log(card1, card2)
+        const sumOfCardValues = getLetterLapValue(card1) + getLetterLapValue(card2);
+        if(sumOfCardValues === 22){
+            return 12;
+        } else {
+            return sumOfCardValues;
+        }
 
-        return getLetterLapValue(card1) + getLetterLapValue(card2)
     }
 
 
@@ -37,7 +42,6 @@ export default function Dealt4Cards( {deckid, bet} ) {
         const blackjack = (playerCardValues === 21 && dealerCardValues === 21) ? "draw" :
         playerCardValues === 21 ? "player" : "continue";
         setBlackjackState(blackjack)
-
         return blackjack
     }
 
