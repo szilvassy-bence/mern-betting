@@ -2,32 +2,32 @@ import { useState, useContext, useRef } from "react";
 import { SearchContext } from "../contexts/SearchContext";
 
 export default function BetModal({ betCurrent, setBetCurrent }) {
-  const [betGreater, setBetGreater] = useState(false)
+  const [betGreater, setBetGreater] = useState(false);
 
-  const { setFunds, funds, user } = useContext(SearchContext)
+  const { setFunds, funds, user } = useContext(SearchContext);
 
-	const amountRef = useRef(0);
+  const amountRef = useRef(0);
 
   console.log(betCurrent);
 
   function onAmountChange() {
     console.log(amountRef.current.value);
-		const amount = amountRef.current.value;
+    const amount = amountRef.current.value;
 
-    if(parseInt(amount) > funds){
-      setBetGreater(true)
+    if (parseInt(amount) > funds) {
+      setBetGreater(true);
     } else {
-      setBetGreater(false)
+      setBetGreater(false);
     }
 
-		setBetCurrent({
-			...betCurrent,
-			betDetails: {
-				...betCurrent.betDetails,
-				betAmount: amount,
-				betWin: amount * betCurrent.betDetails.betOdds
-			}
-		})
+    setBetCurrent({
+      ...betCurrent,
+      betDetails: {
+        ...betCurrent.betDetails,
+        betAmount: amount,
+        betWin: amount * betCurrent.betDetails.betOdds,
+      },
+    });
   }
 
   async function onSubmit(e) {
@@ -40,12 +40,12 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
     data.user = user.id;
     console.log(data);
 
-    if(data.betAmount > funds) {
-      setBetGreater(!betGreater)
+    if (data.betAmount > funds) {
+      setBetGreater(!betGreater);
     } else {
       /*console.log(typeof funds);
       console.log(data.betAmount)*/
-      setBetGreater(false)
+      setBetGreater(false);
 
       const resp = await fetch("/api/betting/league/new", {
         method: "POST",
@@ -55,20 +55,18 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
       const currentBet = await resp.json();
       const betId = currentBet.bet._id;
 
-
-
       const bet = await fetch(`/api/user/deposit/bet/${user.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           deposit: funds - parseInt(data.betAmount),
-          bet: betId
-        } )
-      })
+          bet: betId,
+        }),
+      });
 
-      setFunds(funds - parseInt(data.betAmount))
+      setFunds(funds - parseInt(data.betAmount));
 
-      if(bet.status === 200){
+      if (bet.status === 200) {
         console.log("Successful patch");
       } else {
         console.log("Problem fetching");
@@ -80,7 +78,6 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
         console.log("Problem sending bet");
       }
     }
-
   }
 
   // on select element
@@ -94,10 +91,9 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
         ...betCurrent.betDetails,
         betSide: betSide,
         betOdds: betCurrent.odds.pre[betSide],
-				betWin:
-					betCurrent.betDetails.betAmount
-					? betCurrent.betDetails.betAmount * betCurrent.odds.pre[betSide]
-					: 0,
+        betWin: betCurrent.betDetails.betAmount
+          ? betCurrent.betDetails.betAmount * betCurrent.odds.pre[betSide]
+          : 0,
         betTeam:
           betSide === "1"
             ? betCurrent.home_name
@@ -139,89 +135,103 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
             ></button>
           </div>
           <div className="modal-body">
-            <h3>It's time to make your bet!</h3>
-            <form className="form" onSubmit={onSubmit} id="form-betModal">
-              <label htmlFor="form-select-betModal"  className="form-label">Result</label>
-              <select
-                name="betSide"
-                onChange={onSelectChange}
-                defaultValue={betCurrent.betDetails.betSide}
-                className="form-control mb-3"
-                id="form-select-betModal"
-              >
-                <option value="1" name="home">
-                  Home
-                </option>
-                <option value="X" name="draw">
-                  Draw
-                </option>
-                <option value="2" name="away">
-                  Away
-                </option>
-              </select>
-              <label htmlFor="input-betAmount" className="form-label">
-                Amount
-              </label>
-              <input
-                name="betAmount"
-                type="number"
-                className="form-control mb-3"
-                onChange={onAmountChange}
-                id="input-betAmount"
-                placeholder="$ 0.00"
-								ref={amountRef}
-              />
-              {betGreater ? <p>You don't have enough money</p> : <></>}
-              <label htmlFor="input-betOdds" className="form-label">
-                Odds
-              </label>
-              <input
-                name="betOdds"
-                type="number"
-                readOnly
-                className="form-control mb-3"
-                id="input-betOdds"
-                value={betCurrent.betDetails.betOdds}
-              />
-              <label htmlFor="input-betWin" className="form-label">
-                Possible win
-              </label>
-              <input
-                name="betWin"
-                type="number"
-                readOnly
-                className="form-control mb-3"
-                id="input-betWin"
-								value={betCurrent.betDetails.betWin ? betCurrent.betDetails.betWin : 0}
-              />
-              <button
-                type="button"
-                id="betModal-cancel"
-                className="btn btn-secondary mx-3"
-                data-bs-dismiss="modal"
-								onClick={handleClose}
-              >
-                Cancel
-              </button>
-              {betGreater ? <button
-                  disabled
-                  type="submit"
-                  id="betModal-submit"
-                  data-bs-dismiss="modal"
-                  className="btn btn-primary"
-                >
-                  Bet
-                </button> :
-                <button
-                  type="submit"
-                  id="betModal-submit"
-                  data-bs-dismiss="modal"
-                  className="btn btn-primary"
-                >
-                  Bet
-                </button>
-              }
-            </form>
+            {user ? (
+              <>
+                <h3>It's time to make your bet!</h3>
+                <form className="form" onSubmit={onSubmit} id="form-betModal">
+                  <label htmlFor="form-select-betModal" className="form-label">
+                    Result
+                  </label>
+                  <select
+                    name="betSide"
+                    onChange={onSelectChange}
+                    defaultValue={betCurrent.betDetails.betSide}
+                    className="form-control mb-3"
+                    id="form-select-betModal"
+                  >
+                    <option value="1" name="home">
+                      Home
+                    </option>
+                    <option value="X" name="draw">
+                      Draw
+                    </option>
+                    <option value="2" name="away">
+                      Away
+                    </option>
+                  </select>
+                  <label htmlFor="input-betAmount" className="form-label">
+                    Amount
+                  </label>
+                  <input
+                    name="betAmount"
+                    type="number"
+                    className="form-control mb-3"
+                    onChange={onAmountChange}
+                    id="input-betAmount"
+                    placeholder="$ 0.00"
+                    ref={amountRef}
+                  />
+                  {betGreater ? <p>You don't have enough money</p> : <></>}
+                  <label htmlFor="input-betOdds" className="form-label">
+                    Odds
+                  </label>
+                  <input
+                    name="betOdds"
+                    type="number"
+                    readOnly
+                    className="form-control mb-3"
+                    id="input-betOdds"
+                    value={betCurrent.betDetails.betOdds}
+                  />
+                  <label htmlFor="input-betWin" className="form-label">
+                    Possible win
+                  </label>
+                  <input
+                    name="betWin"
+                    type="number"
+                    readOnly
+                    className="form-control mb-3"
+                    id="input-betWin"
+                    value={
+                      betCurrent.betDetails.betWin
+                        ? betCurrent.betDetails.betWin
+                        : 0
+                    }
+                  />
+                  <button
+                    type="button"
+                    id="betModal-cancel"
+                    className="btn btn-secondary mx-3"
+                    data-bs-dismiss="modal"
+                    onClick={handleClose}
+                  >
+                    Cancel
+                  </button>
+                  {betGreater ? (
+                    <button
+                      disabled
+                      type="submit"
+                      id="betModal-submit"
+                      data-bs-dismiss="modal"
+                      className="btn btn-primary"
+                    >
+                      Bet
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      id="betModal-submit"
+                      data-bs-dismiss="modal"
+                      className="btn btn-primary"
+                    >
+                      Bet
+                    </button>
+                  )}
+                </form>
+              </>
+            ) : (
+              <h3>Please log in to continue!</h3>
+            )}
           </div>
         </div>
       </div>

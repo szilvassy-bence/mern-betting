@@ -57,7 +57,7 @@ export default function Nav() {
 
   return (
     <div className="container-fluid p-0" id="nav">
-      <div className="navbar bg-primary navbar-expand-lg">
+      <div className="navbar bg-success navbar-expand-lg">
         <div className="container py-3">
           <Link to="/">
             <button type="button">Home Page</button>
@@ -85,7 +85,13 @@ export default function Nav() {
           </select>}
           <div>
             <label>Funds:</label>
-            <p>{funds}</p>
+            { 
+              user ? (
+                <p>{funds}</p>
+              ) : (
+                <p>0</p>
+              )
+            }
           </div>
           <div className="dropdown-center" id="login-dropdown">
             <button
@@ -94,7 +100,7 @@ export default function Nav() {
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Login
+              Account
             </button>
             {
               user ? (

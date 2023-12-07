@@ -126,6 +126,58 @@ const UserAccount = () => {
             </div>
           </form>
         </div>
+        <div className="row-md-12">
+          <h2>Your Bets</h2>
+          { account.bets.length > 0 ? (
+            <table className='table'>
+              <thead>
+                <tr>
+                  <th scope='col'>#</th>
+                  <th scope='col'>Match Id</th>
+                  <th scope='col'>Bet amount</th>
+                  <th scope='col'>Possible win</th>
+                  <th scope='col'>Bet side</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  account.bets.map((bet, i) => {
+                    return (
+                      <tr key={bet._id}>
+                        <th scope='row'>{i+1}</th>
+                        <td>{bet.matchId}</td>
+                        <td>{bet.betAmount}</td>
+                        <td>{bet.betWin}</td>
+                        <td>{bet.betSide}</td>
+                      </tr>
+                    )
+                  })
+                }
+              </tbody>
+            </table>
+            ) : (
+              <h5>You have no open bets currently.</h5>
+            ) 
+          }
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th></th>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       </>) :
       (<div className='notlogged'>
