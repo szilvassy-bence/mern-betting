@@ -8,7 +8,8 @@ const UserSchema = new Schema({
 	phone: { type: Number, required: true},
 	createdAt: { type: Date },
 	password: {type: String},
-	deposit: { type: Number }
+	deposit: { type: Number },
+	bets: [{ type: Schema.Types.ObjectId, ref: "Bet" }]
 })
 
 // Create a virtual with its full name

@@ -12,10 +12,11 @@ const UserAccount = () => {
   const [deposited, setDeposited] = useState(false)
   const { user } = useContext(SearchContext)
 
+
   const submitDeposit = (e) => {
     e.preventDefault()
     console.log(depositValue);
-    fetch(`/api/user/deposit/dep/${user}`, {
+    fetch(`/api/user/deposit/dep/${user.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({deposit: depositValue})})
@@ -32,12 +33,13 @@ const UserAccount = () => {
     e.preventDefault()
 
     const newAccount = {...account}
-    newAccount.email = newEmail
-    newAccount.first = newFirst
-    newAccount.last = newLast
-    newAccount.phone = newPhone
+    console.log(account);
+    newAccount.email = newEmail === "" ? account.email : newEmail
+    newAccount.first = newFirst === "" ? account.firstName : newFirst
+    newAccount.last = newLast === "" ? account.lastName : newLast
+    newAccount.phone = newPhone === "" ? account.phone : newPhone
 
-    fetch(`/api/user/update/${user}`, {
+    fetch(`/api/user/update/${user.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newAccount)
@@ -51,9 +53,10 @@ const UserAccount = () => {
   useEffect(() => {
     const fetchAccount = async () => {
       try {
-        const result = await fetch(`/api/user/info/${user}`)
+        const result = await fetch(`/api/user/info/${user.id}`)
         const data = await result.json()
         setAccount(data)
+        console.log(account);
 
       } catch (error) {
         console.error(error)
@@ -74,7 +77,7 @@ const UserAccount = () => {
           <h2>Account Information</h2>
           <label>Funds</label>
           <p>{account.deposit ? account.deposit : "No deposit"}</p>
-          <lable>Email:</lable>
+          <label>Email:</label>
           <p>{account.email}</p>
           <label>Full name:</label>
           <p>{account.firstName} {account.lastName}</p>

@@ -33,7 +33,7 @@ router.get("/", (req, res) => {
 
 router.get("/info/:id", async (req, res) => {
 	const id = req.params.id
-	const user = await User.findById(id)
+	const user = await User.findById(id).populate("bets")
 	if(user) {
 		return res.status(200).json(user)
 	} else {
@@ -71,6 +71,7 @@ router.patch("/update/:id", async (req, res) => {
 router.patch("/deposit/:type/:id", async (req, res) => {
 	const id = req.params.id
 	const type = req.params.type
+	console.log(req.body);
 
 	try {
 		const user = await User.findById(id)
@@ -80,7 +81,10 @@ router.patch("/deposit/:type/:id", async (req, res) => {
 			
 			if (user.deposit && type === "bet"){
 				console.log("decreased deposit key");
-				updateProp = {$set: { deposit: parseInt(req.body.deposit)}}
+				updateProp = {
+					$set: { deposit: parseInt(req.body.deposit)},
+					$push: { bets: req.body.bet }
+				}
 			} else if (user.deposit){
 				console.log("updated deposit key")
 				updateProp = {$set: { deposit: user.deposit + parseInt(req.body.deposit)}}
@@ -211,8 +215,11 @@ router.post("/login", async (req, res) => {
 
 			if (result) {
 				console.log('Password match');
-				const id = user._id;
-				return res.status(200).json({ id });
+				const loggedInUser = {
+					id: user._id,
+					name: user.firstName
+				}
+				return res.status(200).json(loggedInUser);
 			} else {
 				console.log('Password does not match');
 				return res.status(401).json({ error: 'Invalid email or password.' });

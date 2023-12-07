@@ -36,8 +36,8 @@ export default function Nav() {
 
       if (resp.ok) {
         const data = await resp.json();
-        const { id } = data;
-        setUser(id);
+        console.log(data);
+        setUser(data);
         console.log("success");
         // Handle successful login
       } else if (resp.status === 401) {
@@ -87,12 +87,7 @@ export default function Nav() {
             <label>Funds:</label>
             <p>{funds}</p>
           </div>
-          <div>
-            <Link to="/account">
-              <button>Account</button>
-            </Link>
-          </div>
-          <div className="dropdown" id="login-dropdown">
+          <div className="dropdown-center" id="login-dropdown">
             <button
               type="button"
               className="btn btn-light dropdown-toggle"
@@ -104,20 +99,22 @@ export default function Nav() {
             {
               user ? (
                 <div
-                  className="dropdown-menu dropdown-menu-left p-3"
+                  className="dropdown-menu p-3"
                   aria-labelledby="account-dropdown"
                   ref={dropdownRef}
                 >
                   <div className="row">
                     <div className="container">
                       <ul className="listgroup" aria-current="true">
-                        <li className="list-group-item">Hi, ${user}</li>
+                        <li className="list-group-item">Hi, {user.name}</li>
                         <li className="list-group-item">
                           <Link to="/account">
                             Account
                           </Link>
                         </li>
-                        <li className="list-group-item" onClick={() => setUser(null)}>Log out</li>
+                        <li className="list-group-item" onClick={() => setUser(null)}>
+                          <a href="#">Log out</a>
+                        </li>
                       </ul>
                     </div>
                   </div>

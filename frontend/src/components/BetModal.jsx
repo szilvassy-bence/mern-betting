@@ -36,7 +36,8 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
     const formEl = document.getElementById("form-betModal");
     const formData = new FormData(formEl);
     const data = Object.fromEntries(formData);
-    data.matchid = betCurrent.id;
+    data.matchId = betCurrent.id;
+    data.user = user.id;
     console.log(data);
 
     if(data.betAmount > funds) {
@@ -51,11 +52,18 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data }),
       });
+      const currentBet = await resp.json();
+      const betId = currentBet.bet._id;
 
-      const bet = await fetch(`/api/user/deposit/bet/${user}`, {
+
+
+      const bet = await fetch(`/api/user/deposit/bet/${user.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ deposit: funds - parseInt(data.betAmount)} )
+        body: JSON.stringify({ 
+          deposit: funds - parseInt(data.betAmount),
+          bet: betId
+        } )
       })
 
       setFunds(funds - parseInt(data.betAmount))
@@ -109,7 +117,6 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
 
   return betCurrent ? (
     <div
-      ref={ref}
       className="modal fade"
       id="betModal"
       tabIndex="-1"

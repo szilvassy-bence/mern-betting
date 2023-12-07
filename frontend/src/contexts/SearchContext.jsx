@@ -15,7 +15,7 @@ export function SearchContextComponent() {
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const result = await fetch(`/api/user/funds/${user}`)
+				const result = await fetch(`/api/user/funds/${user.id}`)
 				const data = await result.json();
 				console.log(data);
 				setFunds(parseInt(data))

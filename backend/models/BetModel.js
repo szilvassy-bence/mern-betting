@@ -7,7 +7,8 @@ const betSchema = new Schema({
 	betAmount: Number,
 	betOdds: Number,
 	betWin: Number,
-	id: String
+	matchId: String,
+	user: { type: Schema.Types.ObjectId, ref: "User"}
 })
 
 export default model ("Bet", betSchema)
