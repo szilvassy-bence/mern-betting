@@ -191,16 +191,16 @@ export default function Blackjack() {
         <div className="bl-starter">
             {gameStage === 'start' && (
                 <div className="middle">
-                    <h2>Press start if you are ready to play Blackjack!</h2>
+                    <h2 className="bl-h2">Press start if you are ready to play Blackjack!</h2>
                     <button onClick={() => SetGameStage('placeBet')}>Start Blackjack!</button>
                 </div>
             )}
             {gameStage === 'placeBet' && (
-                <>
-                    <h2>Place your bet to start the game!</h2>
-                    <input id='user-bet' type='number' placeholder='0' min='0'value={betAmount} onChange={(e) => SetBetAmount(e.target.value)}></input>
+                <div className="middle">
+                    <h2 className="bl-h2">Place your bet to start the game!</h2>
+                    <input className="bl-input" id='user-bet' type='number' placeholder='0' min='0' value={betAmount} onChange={(e) => SetBetAmount(e.target.value)}></input>
                     <button onClick={() => SetGameStage('deal')}>Place bet!</button>
-                </>
+                </div>
             )}
             {gameStage === 'deal' && <DealCards bet={betAmount} handleFirstDealEnded={handleFirstDealEnded}/>}
             {gameStage === 'player-round' && <PlayerRound deckId={deckId} playerCards={playerCards} dealerCards={dealerCards} 
