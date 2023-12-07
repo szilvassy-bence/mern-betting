@@ -76,7 +76,7 @@ const UserAccount = () => {
         <div className='col-md-4'>
           <h2>Account Information</h2>
           <label>Funds</label>
-          <p>{account.deposit ? account.deposit : "No deposit"}</p>
+          <p>{account.deposit ? `${account.deposit} €` : "No deposit"}</p>
           <label>Email:</label>
           <p>{account.email}</p>
           <label>Full name:</label>
