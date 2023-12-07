@@ -78,7 +78,7 @@ export default function DealerRound({deckId, playerCards, dealerCards, dealerCar
             } else if ((sumOfNotAces + 11 === 21) || (sumOfNotAces + 1 === 21)){
                 sumOfAllCards = [21];
             } else if(sumOfNotAces + 11 >= 17 || sumOfNotAces + 11 < 21){
-                sumOfAllCards = sumOfNotAces + 11
+                sumOfAllCards = [sumOfNotAces + 11]
             } else {
                 sumOfAllCards = [sumOfNotAces + 11, sumOfNotAces + 1]
             }
