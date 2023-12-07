@@ -89,7 +89,9 @@ export default function DealerRound({deckId, playerCards, dealerCards, dealerCar
                 setButtonVisibility(false)
                 gameOver(actualCards, sumOfAllCards[0])
             } else {
-                setCardValues(sumOfAllCards);
+                setTimeout(() => {
+                    setCardValues(sumOfAllCards);
+                  }, 1500);
                 console.log(`${sumOfAllCards[0]} is less than 17, dealer needs to deal another card.`)
             }
        
