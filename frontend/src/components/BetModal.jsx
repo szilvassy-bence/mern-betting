@@ -2,15 +2,23 @@ import { useState, useContext, useRef } from "react";
 import { SearchContext } from "../contexts/SearchContext";
 
 export default function BetModal({ betCurrent, setBetCurrent }) {
+  const [betGreater, setBetGreater] = useState(false)
 
-  const { setFunds, funds } = useContext(SearchContext)
+  const { setFunds, funds, user } = useContext(SearchContext)
 
 	const amountRef = useRef(0);
 
+  console.log(betCurrent);
 
   function onAmountChange() {
     console.log(amountRef.current.value);
 		const amount = amountRef.current.value;
+
+    if(parseInt(amount) > funds){
+      setBetGreater(true)
+    } else {
+      setBetGreater(false)
+    }
 
 		setBetCurrent({
 			...betCurrent,
@@ -24,26 +32,47 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
 
   async function onSubmit(e) {
     e.preventDefault();
-    if(betCurrent.betAmount > funds) {
-      
-    }
+
     const formEl = document.getElementById("form-betModal");
     const formData = new FormData(formEl);
     const data = Object.fromEntries(formData);
     data.matchid = betCurrent.id;
     console.log(data);
 
-    const resp = await fetch("/api/betting/league/new", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data }),
-    });
-
-    if (resp.status === 200) {
-      console.log("Successful post method");
+    if(data.betAmount > funds) {
+      setBetGreater(!betGreater)
     } else {
-      console.log("Problem sending bet");
+      /*console.log(typeof funds);
+      console.log(data.betAmount)*/
+      setBetGreater(false)
+
+      const resp = await fetch("/api/betting/league/new", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data }),
+      });
+
+      const bet = await fetch(`/api/user/deposit/bet/${user}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deposit: funds - parseInt(data.betAmount)} )
+      })
+
+      setFunds(funds - parseInt(data.betAmount))
+
+      if(bet.status === 200){
+        console.log("Successful patch");
+      } else {
+        console.log("Problem fetching");
+      }
+
+      if (resp.status === 200) {
+        console.log("Successful post method");
+      } else {
+        console.log("Problem sending bet");
+      }
     }
+
   }
 
   // on select element
@@ -134,6 +163,7 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
                 placeholder="$ 0.00"
 								ref={amountRef}
               />
+              {betGreater ? <p>You don't have enough money</p> : <></>}
               <label htmlFor="input-betOdds" className="form-label">
                 Odds
               </label>
@@ -165,14 +195,24 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
               >
                 Cancel
               </button>
-              <button
-                type="submit"
-                id="betModal-submit"
-                data-bs-dismiss="modal"
-                className="btn btn-primary"
-              >
-                Bet
-              </button>
+              {betGreater ? <button
+                  disabled
+                  type="submit"
+                  id="betModal-submit"
+                  data-bs-dismiss="modal"
+                  className="btn btn-primary"
+                >
+                  Bet
+                </button> :
+                <button
+                  type="submit"
+                  id="betModal-submit"
+                  data-bs-dismiss="modal"
+                  className="btn btn-primary"
+                >
+                  Bet
+                </button>
+              }
             </form>
           </div>
         </div>

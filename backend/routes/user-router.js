@@ -67,8 +67,9 @@ router.patch("/update/:id", async (req, res) => {
 	return res.status(200).json(user)
 })
 
-router.patch("/deposit/:id", async (req, res) => {
+router.patch("/deposit/:type/:id", async (req, res) => {
 	const id = req.params.id
+	const type = req.params.type
 
 	try {
 		const user = await User.findById(id)
@@ -76,7 +77,10 @@ router.patch("/deposit/:id", async (req, res) => {
 		if (user){
 			let updateProp;
 			
-			if (user.deposit){
+			if (user.deposit && type === "bet"){
+				console.log("decreased deposit key");
+				updateProp = {$set: { deposit: parseInt(req.body.deposit)}}
+			} else if (user.deposit){
 				console.log("updated deposit key")
 				updateProp = {$set: { deposit: user.deposit + parseInt(req.body.deposit)}}
 			} else {

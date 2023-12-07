@@ -15,7 +15,7 @@ const UserAccount = () => {
   const submitDeposit = (e) => {
     e.preventDefault()
     console.log(depositValue);
-    fetch(`/api/user/deposit/${user}`, {
+    fetch(`/api/user/deposit/dep/${user}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({deposit: depositValue})})
@@ -85,24 +85,42 @@ const UserAccount = () => {
         </div>
         <div className='col-md-4'>
           <h2>Edit profile</h2>
-          <form onSubmit={submitAccountChanges}>
-            <label>Email</label>
-            <input value={newEmail} type="text" onChange={(e) => setNewEmail(e.target.value)}/>
-            <label>First name</label>
-            <input value={newFirst} type="text" onChange={(e) => setNewFirst(e.target.value)}/>
-            <label>Last name</label>
-            <input value={newLast} type="text" onChange={(e) => setNewLast(e.target.value)}/>
-            <label>Phone</label>
-            <input value={newPhone} type="text" onChange={(e) => setNewPhone(e.target.value)}/>
-            <button type="submit">Save</button>
+          <form onSubmit={submitAccountChanges} className='form-inline'>
+            <div>
+              <div className="form-group">
+                <label>Email</label>
+                <input className="form-control" value={newEmail} type="email" onChange={(e) => setNewEmail(e.target.value)}/>
+              </div>
+              <div className="form-group">
+                <label>First name</label>
+                <input className="form-control" value={newFirst} type="text" onChange={(e) => setNewFirst(e.target.value)}/>
+              </div>
+              <div className="form-group">
+                <label>Last name</label>
+                <input className="form-control" value={newLast} type="text" onChange={(e) => setNewLast(e.target.value)}/>
+              </div>
+              <div className="form-group">
+                <label>Phone</label>
+                <input className="form-control" value={newPhone} type="text" onChange={(e) => setNewPhone(e.target.value)}/>
+              </div>
+              <div className="form-group">
+                <button type="submit">Save</button>
+              </div>
+            </div>
           </form>
         </div>
         <div className='col-md-4'>
           <h2>Deposit</h2>
           <form onSubmit={submitDeposit}>
-            <label>Make your deposit:</label>
-            <input value={depositValue} type="text" onChange={(e) => setDepositValue(e.target.value)}/>
-            <button type="submit">Deposit</button>
+            <div className='col'>
+              <div className='row-md-2'>
+                <label>Make your deposit:</label>
+                <input className="form-control" value={depositValue} type="text" onChange={(e) => setDepositValue(e.target.value)}/>
+              </div>
+              <div className='row-md-2'>
+                <button type="submit">Deposit</button>
+              </div>
+            </div>
           </form>
         </div>
       </div>
