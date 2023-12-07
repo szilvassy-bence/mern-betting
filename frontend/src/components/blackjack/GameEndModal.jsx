@@ -62,7 +62,7 @@ export default function GameEndModal({ blackjackState, betAmount, playerCardValu
                 </div>
                 <>
                     <button className="home-btn" onClick={handleStartNewGame}>Start new game</button>
-                    <button><Link to="/">Back to main page</Link></button>
+                    <button className="home-btn"><Link to="/" className="home-btn">Back to main page</Link></button>
                 </>
             </div>
         </div>
