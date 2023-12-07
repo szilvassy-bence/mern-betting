@@ -1,7 +1,7 @@
 import { useState, useContext, useRef } from "react";
 import { SearchContext } from "../contexts/SearchContext";
 
-export default function BetModal({ betCurrent, setBetCurrent }) {
+export default function BetModal({ betCurrent, setBetCurrent, ref }) {
 
   const { setFunds, funds } = useContext(SearchContext)
 
@@ -80,6 +80,7 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
 
   return betCurrent ? (
     <div
+      ref={ref}
       className="modal fade"
       id="betModal"
       tabIndex="-1"

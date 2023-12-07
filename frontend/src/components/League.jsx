@@ -92,10 +92,10 @@ export default function League() {
                         <td>
                           <button
                             id={btnHomeOdds}
-                            onClick={(e) => handleBet(e, match)}
                             className="btn btn-outline-danger mx-2"
                             data-bs-toggle="modal"
                             data-bs-target="#betModal"
+                            onClick={(e) => handleBet(e, match)}
                           >
                             {match.odds.pre["1"] ? match.odds.pre["1"] : "N/A"}
                           </button>
@@ -103,10 +103,10 @@ export default function League() {
                         <td>
                           <button
                             id={btnDrawOdds}
-                            onClick={(e) => handleBet(e, match)}
                             className="btn btn-outline-success"
                             data-bs-toggle="modal"
                             data-bs-target="#betModal"
+                            onClick={(e) => handleBet(e, match)}
                           >
                             {match.odds.pre["X"] ? match.odds.pre["X"] : "N/A"}
                           </button>
@@ -114,10 +114,10 @@ export default function League() {
                         <td>
                           <button
                             id={btnAwayOdds}
-                            onClick={(e) => handleBet(e, match)}
                             className="btn btn-outline-success"
                             data-bs-toggle="modal"
                             data-bs-target="#betModal"
+                            onClick={(e) => handleBet(e, match)}
                           >
                             {match.odds.pre["2"] ? match.odds.pre["2"] : "N/A"}
                           </button>
