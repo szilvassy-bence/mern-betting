@@ -88,7 +88,7 @@ export default function Nav() {
               user ? (
                 <>
                 <h3 className="middle">Funds:</h3>
-                <h3 className="middle">{funds}</h3>
+                <h3 className="middle">{funds} €</h3>
                 </>
               ) : (
                 null

@@ -273,7 +273,7 @@ export default function Blackjack() {
                 <div className="middle">
                     <h2 className="bl-h2">Place your bet to start the game!</h2>
                     <input className="bl-input" id='user-bet' type='number' placeholder='0' min='0' max={funds} value={betAmount} 
-                    onChange={(e) => SetBetAmount(parseInt(e.target.value))}></input>
+                    onChange={(e) => SetBetAmount(parseInt(e.target.value))}></input ><p></p>
                     <button onClick={()=>handleBet()}>Place bet!</button>
                 </div>
             )}
