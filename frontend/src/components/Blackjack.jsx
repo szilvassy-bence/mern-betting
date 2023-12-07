@@ -21,9 +21,11 @@ export default function Blackjack() {
 
     function handleBet(){
         console.log(funds)
-        if(betAmount <= funds){
+        if(betAmount <= funds && betAmount > 0){
             setFunds(funds - betAmount)
             SetGameStage('deal')
+        } else if(betAmount <= 0){
+            window.alert(`You have to place at least a 1 € bet!`);
         } else {
             window.alert(`You do not have enough money. You can place a maximum of ${funds} bet!`);
         }
