@@ -43,6 +43,24 @@ router.get("/info/:id", async (req, res) => {
 	
 })
 
+router.get("/funds/:id", async (req, res) => {
+	const id = req.params.id
+	console.log("!!!");
+	try {
+		const user = await User.findById(id)
+		
+		if(user.deposit){
+			console.log(user.deposit);
+			return res.status(200).json(user.deposit)
+		} else {
+			return res.status(404).json({message: "User hasn't deposited yet"})
+		}
+		
+	} catch (error) {
+		console.error(error)
+	}
+})
+
 router.patch("/update/:id", async (req, res) => {
 	const id = req.params.id
 	const user = await User.findByIdAndUpdate(id, {email: req.body.email, firstName: req.body.first, lastName: req.body.last, phone: req.body.phone}, {new: true})

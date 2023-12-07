@@ -1,6 +1,9 @@
 import { useState, useContext, useRef } from "react";
+import { SearchContext } from "../contexts/SearchContext";
 
 export default function BetModal({ betCurrent, setBetCurrent }) {
+
+  const { setFunds, funds } = useContext(SearchContext)
 
 	const amountRef = useRef(0);
 
@@ -21,6 +24,9 @@ export default function BetModal({ betCurrent, setBetCurrent }) {
 
   async function onSubmit(e) {
     e.preventDefault();
+    if(betCurrent.betAmount > funds) {
+      
+    }
     const formEl = document.getElementById("form-betModal");
     const formData = new FormData(formEl);
     const data = Object.fromEntries(formData);

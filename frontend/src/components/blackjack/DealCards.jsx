@@ -7,7 +7,7 @@ export default function DealCards({bet, handleFirstDealEnded}) {
 
 
     useEffect(() => {
-        fetch(`/api/betting/blackjack/deckid`)
+        fetch(`/api/blackjack/deckid`)
         .then((response) => response.json())
         .then((deck) => {
           console.log(deck);
@@ -61,7 +61,7 @@ export default function DealCards({bet, handleFirstDealEnded}) {
 
     return (
         <>
-           { !dealId && <h2>Dealing cards</h2>}
+           { !dealId && <div className="bj-dealer-upper"><h2>Dealing cards</h2></div>}
            {/* dealId && <Dealt4Cards deckid={dealId} bet={bet}/>*/}
            { dealtCards &&(
                 <>

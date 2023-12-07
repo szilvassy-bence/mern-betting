@@ -4,6 +4,7 @@ import {logger} from "./middlewares/logger.js";
 import mongoose from "mongoose";
 import bettingRouter from "./routes/betting-router.js"
 import userRouter from "./routes/user-router.js";
+import blackjackRouter from "./routes/blackjack-router.js"
 import { query, validationResult } from "express-validator";
 
 const app = express();
@@ -19,6 +20,9 @@ app.use("/api/betting", bettingRouter)
 
 // API USER routes
 app.use("/api/user", userRouter)
+
+// API Blackjack routes
+app.use("/api/blackjack", blackjackRouter)
 
 // Landing URL
 app.get("/", (req, res)=> {

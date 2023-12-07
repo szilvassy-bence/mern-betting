@@ -20,7 +20,9 @@ export default function League() {
       .then((response) => response.json())
       .then((league) => {
         console.log(league.league.data.fixtures);
-        setClickedLeague(league.league.data.fixtures);
+        const data = league.league.data.fixtures
+        const filterLeague = data.filter(match => match.odds.pre["1"] !== null)
+        setClickedLeague(filterLeague);
       })
       .catch((error) => console.log(error));
   }, []);

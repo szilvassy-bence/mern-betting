@@ -21,3 +21,7 @@ GET http://localhost:5000/api/user/login
 GET http://localhost:5000/api/user/register
 
 ###
+
+GET http://localhost:5000/api/user/funds/65718ec1019b4ee9437cd9bc
+
+###

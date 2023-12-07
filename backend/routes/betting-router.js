@@ -36,20 +36,6 @@ const liveScoreKeys = {
 	}
 })*/
 
-//BlackjackID
-router.get("/blackjack/deckid", async (req, res) => {
-	console.log("asd")
-	try {
-		const resp = await fetch(`https://www.deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1`)
-		const deckId = await resp.json();
-		console.log(deckId);
-		res.send(deckId);
-	} catch (error) {
-		console.log(error);
-	}
-})
-
-
 // GET a league
 router.get("/leagues", async (req, res) => {
 	try {

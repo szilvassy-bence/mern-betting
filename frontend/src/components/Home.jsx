@@ -8,7 +8,7 @@ export default function Home () {
                 <div className="container">
                     <Link to="/casino/blackjack">
                         <button>
-                            Play to BlackJack
+                            Play BlackJack
                         </button>
                     </Link>
                     <Link to="/leagues">

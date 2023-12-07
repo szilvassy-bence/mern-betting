@@ -1,7 +1,9 @@
-/* Add this to your CSS file or style section */
-
 .bl-starter{
   background-color:aliceblue;
+  align-items: stretch;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .bj-dealer,
@@ -13,10 +15,19 @@
 
 .bj-dealer-upper{
   background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .bj-player-upper{
   background-color: rgb(0, 255, 34);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .bj-card {
@@ -31,8 +42,11 @@
 
 .bj-separator {
   /*border-top: 2px solid #706f6f;*/ /* Adjust the color and thickness of the separator line */
+  display: flex;
   padding: 10px 0; /* Adjust the margin above and below the separator */
   background-color: #969090;
+  align-items: center;
+  justify-content: center;
 }
 
 .confirmation-overlay {
@@ -61,11 +75,13 @@
 }
 
 .middle{
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-input[type="number"] {
+.bl-input {
   width: 20%;
   padding: 10px;
   margin: 8px 8px;
@@ -79,8 +95,22 @@ input[type="number"] {
 }
 
 /* Style for when the input is focused */
-input[type="number"]:focus {
+.bl-input:focus {
   outline: none;
   border-color: darkgreen; /* Change the color to your preferred focus color */
   box-shadow: 0 0 5px rgba(1, 22, 19, 0.5); /* Adjust shadow as needed */
+}
+
+.bl-h2{
+  align-items: center;
+  justify-content: center;
+}
+
+.home-btn {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+.home-btn:hover {
+  color: #535bf2;
 }
