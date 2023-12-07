@@ -1,17 +1,4 @@
 import { useRef, useState, useEffect } from "react";
-import bcrypt from "bcryptjs";
-
-const plain = "jelszo";
-const saltRounds = 10;
-bcrypt.genSalt(saltRounds, function (err, salt) {
-  bcrypt.hash(plain, salt, function (err, hash) {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log("Hashed Password:", hash);
-    }
-  });
-});
 
 const userRegex = /^[a-zA-Z][a-zA-z0-9-_]{3,23}$/;
 const pwdRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -42,67 +29,114 @@ export default function Register() {
     } else {
       console.log("There is an error posting the registration");
       const data = await resp.json();
-      console.log(data);
+      const { errors } = data;
+
+      const inputs = document.querySelectorAll(".form-control-registration")
+      const errorPaths = errors.map(error => error.path);
+      console.log(errorPaths);
+      inputs.forEach(input => {
+        if (errorPaths.includes(input.id)) {
+          input.classList.remove("is-valid");
+          input.classList.add("is-invalid");
+        } else {
+          input.classList.remove("is-invalid");
+          input.classList.add("is-valid");
+        }
+      })
     }
   }
 
   return (
     <div className="container mt-3">
-      <form onSubmit={onSubmit} ref={formRef}>
+      <form onSubmit={onSubmit} ref={formRef} className="needs-validation">
         <div className="mb-3">
           <label htmlFor="first-name" className="form-label">
             First name
           </label>
           <input
             type="text"
-            className="form-control"
-            id="first-name"
+            className="form-control form-control-registration"
+            id="firstName"
             name="firstName"
             placeholder="First name"
           />
+          <div className="invalid-feedback">
+            First name must not be empty, must have at least two characters, the
+            first character must be a character from a-z or A-Z.
+          </div>
+        </div>
+
+        <div className="mb-3">
           <label htmlFor="last-name" className="form-label">
             Last name
           </label>
           <input
             type="text"
-            className="form-control"
-            id="last-name"
+            className="form-control form-control-registration"
+            id="lastName"
             name="lastName"
             placeholder="Last name"
           />
+          <div className="invalid-feedback">
+            Last name must not be empty, must have at least two characters, the
+            first character must be a character from a-z or A-Z.
+          </div>
+        </div>
+
+        <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email
           </label>
           <input
             type="text"
-            className="form-control"
+            className="form-control form-control-registration"
             id="email"
             name="email"
             placeholder="Email"
           />
+          <div className="invalid-feedback">
+            Email must be a valid email address.
+          </div>
+        </div>
+
+        <div className="mb-3">
           <label htmlFor="phone" className="form-label">
             Phone
           </label>
           <input
             type="text"
-            className="form-control"
+            className="form-control form-control-registration"
             id="phone"
             name="phone"
             placeholder="Phone"
           />
+          <div className="invalid-feedback">
+            Phone must not be empty, and have at least 7 numbers.
+          </div>
+        </div>
+
+        <div className="mb-3">
           <label htmlFor="password" className="form-label">
             Password
           </label>
           <input
             type="password"
-            className="form-control"
+            className="form-control form-control-registration"
             id="password"
             name="password"
             placeholder="Password"
           />
+          <div className="invalid-feedback">
+            Password must be at least 8 characters and include at least one
+            small letter, one capital letter, and one number, and one special
+            characters from: !@#$%.
+          </div>
+        </div>
+
+        <div className="mb-3">
           <div className="form-check">
             <input
-              className="form-check-input is-invalid"
+              className="form-check-input"
               type="checkbox"
               value=""
               id="invalidCheck3"

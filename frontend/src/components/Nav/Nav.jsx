@@ -1,8 +1,11 @@
 import { useContext, useState } from "react";
-import { SearchContext } from "../contexts/SearchContext";
+import { SearchContext } from "../../contexts/SearchContext";
+import { Link } from "react-router-dom"
+import "./Nav.css";
 
 export default function Nav() {
   const { setSearch, setSort, setUser } = useContext(SearchContext);
+  const [loginError, setLoginError] = useState(null);
 
   function onChangeInput(e) {
     setSearch(e.target.value);
@@ -15,21 +18,22 @@ export default function Nav() {
   async function submitLogin(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const loginData = Object.fromEntries(formData)
-    console.log(loginData);
+    const loginData = Object.fromEntries(formData);
+    //console.log(loginData);
 
     // POST THE FORM IN THE REQ.BODY
     try {
       const resp = await fetch("/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData)
+        body: JSON.stringify(loginData),
       });
-    
+
       if (resp.ok) {
         const data = await resp.json();
-        const {id} = data;
+        const { id } = data;
         setUser(id);
+        console.log("success");
         // Handle successful login
       } else if (resp.status === 401) {
         throw new Error("Invalid email or password");
@@ -37,11 +41,14 @@ export default function Nav() {
         throw new Error("Something went wrong");
       }
     } catch (err) {
-      console.error(err);
+      //console.error(err.message);
+      const { message } = err;
+      setUser(null);
+      setLoginError(message);
+      document.querySelector(".dropdown-menu").classList.toggle("show");
+      // INFO MESSAGE
     }
   }
-
-
 
   return (
     <div className="container-fluid p-0" id="nav">
@@ -70,20 +77,17 @@ export default function Nav() {
             </optgroup>
           </select>
           <div className="dropdown" id="login-dropdown">
-            <a
-              href="#"
-              id="account-dropdown"
-              role="button"
+            <button
+              type="button"
+              className="btn btn-light dropdown-toggle"
               data-bs-toggle="dropdown"
-              className="nav-link account dropdown-toggle"
-              aria-haspopup="true"
+              aria-expanded="false"
             >
-              <span className="menu-item-icon"></span>
-              <span className="menu-item-label">Fiók</span>
-            </a>
+              Login
+            </button>
 
             <div
-              className="dropdown-menu dropdown-menu-right"
+              className="dropdown-menu dropdown-menu-left p-3"
               aria-labelledby="account-dropdown"
             >
               <div className="row">
@@ -94,7 +98,7 @@ export default function Nav() {
                     noValidate
                     onSubmit={submitLogin}
                   >
-                    <div className="form-group required has-feedback">
+                    <div className="form-group required has-feedback mb-3">
                       <label htmlFor="email" className="form-label">
                         E-mail
                       </label>
@@ -106,7 +110,7 @@ export default function Nav() {
                         required
                       />
                     </div>
-                    <div className="form-group required has-feedback">
+                    <div className="form-group required has-feedback mb-3">
                       <label htmlFor="password" className="form-label">
                         Password
                       </label>
@@ -117,6 +121,16 @@ export default function Nav() {
                         id="password-login"
                         required
                       />
+                    </div>
+                    {loginError && (
+                      <div>
+                        <p className="text-danger">{loginError}</p>
+                      </div>
+                    )}
+                    <div className="mb-3">
+                      <Link to="/user/register">
+                        Or register now!
+                      </Link>
                     </div>
                     <div className="form-group">
                       <button
