@@ -57,7 +57,9 @@ export default function Nav() {
     <div className="container-fluid p-0" id="nav">
       <div className="navbar bg-primary navbar-expand-lg">
         <div className="container py-3">
-          <button type="button">Back</button>
+          <Link to="/">
+            <button type="button">Home Page</button>
+          </Link>
           {location.pathname !== '/casino/blackjack' && <input
             className="form-control w-25"
             type="text"
@@ -79,6 +81,15 @@ export default function Nav() {
               <option value="country-za">Z to A</option>
             </optgroup>
           </select>}
+          <div>
+            <label>Funds:</label>
+            <p>{funds}</p>
+          </div>
+          <div>
+            <Link to="/account">
+              <button>Account</button>
+            </Link>
+          </div>
           <div className="dropdown" id="login-dropdown">
             <button
               type="button"
