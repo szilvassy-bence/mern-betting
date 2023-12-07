@@ -60,13 +60,13 @@ export default function Nav() {
           <Link to="/">
             <button type="button">Home Page</button>
           </Link>
-          {isLeaguesPath && (<input
+          {location.pathname === '/leagues' && (<input
             className="form-control w-25"
             type="text"
             onChange={onChangeInput}
             placeholder="Search..."
           />)}
-          {isLeaguesPath && (<select
+          {location.pathname === '/leagues' && (<select
             onChange={onChangeSelect}
             className="form-select w-25"
             name="nav-select"
