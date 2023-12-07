@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import "./Nav.css";
 
 export default function Nav() {
-  const { setSearch, setSort, setUser } = useContext(SearchContext);
+  const { setSearch, setSort, setUser, funds } = useContext(SearchContext);
   const [loginError, setLoginError] = useState(null);
 
   function onChangeInput(e) {
@@ -54,7 +54,9 @@ export default function Nav() {
     <div className="container-fluid p-0" id="nav">
       <div className="navbar bg-primary navbar-expand-lg">
         <div className="container py-3">
-          <button type="button">Back</button>
+          <Link to="/">
+            <button type="button">Home Page</button>
+          </Link>
           <input
             className="form-control w-25"
             type="text"
@@ -76,6 +78,15 @@ export default function Nav() {
               <option value="country-za">Z to A</option>
             </optgroup>
           </select>
+          <div>
+            <label>Funds:</label>
+            <p>{funds}</p>
+          </div>
+          <div>
+            <Link to="/account">
+              <button>Account</button>
+            </Link>
+          </div>
           <div className="dropdown" id="login-dropdown">
             <button
               type="button"
