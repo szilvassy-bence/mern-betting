@@ -5,10 +5,8 @@ export const SearchContext = createContext();
 
 export function SearchContextComponent() {
 
-
 	const [search, setSearch] = useState(null);
 	const [sort, setSort] = useState(null);
-	const [league, setLeague] = useState(null);
 	const [user, setUser] = useState(null);
 	const [funds, setFunds] = useState(0)
 
@@ -26,7 +24,6 @@ export function SearchContextComponent() {
 		if(user !== null){
 			fetchData()
 		}
-		
 		
 	}, [user])
 

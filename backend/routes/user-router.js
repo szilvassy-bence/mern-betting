@@ -109,14 +109,6 @@ router.patch("/deposit/:type/:id", async (req, res) => {
 		console.error("Error during update", error)
 		return res.status(500).json({error: "Internal server error", details: error.message})
 	}
-	/*if (user.deposit){
-		const resp = await User.updateOne({_id: id}, {$set: { deposit: user.deposit + parseInt(req.body.deposit)}})
-		return res.status(200).json(resp)
-	} else {
-		console.log("no deposit key yet");
-		const resp = await User.updateOne({_id: id}, {$set: { deposit: req.body.deposit}})
-		return res.status(200).json(resp)
-	}*/
 })
 
 // POST A REGISTRATION
