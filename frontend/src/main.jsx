@@ -10,8 +10,9 @@ import League from "./components/League";
 import Register from "./components/Register";
 import Blackjack from "./components/Blackjack";
 import Home from "./components/Home"
+import UserAccount from "./components/UserAccount"
 
-import { SearchContextComponent } from "./contexts/searchContext";
+import { SearchContextComponent } from "./contexts/SearchContext";
 
 
 
@@ -36,6 +37,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="register" element={<Register />} />
               <Route path=":id" element={<Register />} />
             </Route>
+            <Route path="/account" element={<UserAccount />}/> 
           </Route>
         </Route>
       </Routes>

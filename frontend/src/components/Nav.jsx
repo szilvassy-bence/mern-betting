@@ -1,7 +1,9 @@
 import { useContext, useState } from "react";
 import { SearchContext } from "../contexts/SearchContext";
+import { Link } from "react-router-dom";
 
 export default function Nav() {
+  const [loginError, setLoginError] = useState(null)
   const { setSearch, setSort, setUser } = useContext(SearchContext);
 
   function onChangeInput(e) {
@@ -15,20 +17,20 @@ export default function Nav() {
   async function submitLogin(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const loginData = Object.fromEntries(formData)
-    console.log(loginData);
+    const loginData = Object.fromEntries(formData);
+    //console.log(loginData);
 
     // POST THE FORM IN THE REQ.BODY
     try {
       const resp = await fetch("/api/user/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData)
+        body: JSON.stringify(loginData),
       });
-    
+
       if (resp.ok) {
         const data = await resp.json();
-        const {id} = data;
+        const { id } = data;
         setUser(id);
         // Handle successful login
       } else if (resp.status === 401) {
@@ -37,7 +39,12 @@ export default function Nav() {
         throw new Error("Something went wrong");
       }
     } catch (err) {
-      console.error(err);
+      //console.error(err.message);
+      const { message } = err;
+      setUser(null);
+      setLoginError(message);
+      document.querySelector(".dropdown-menu").classList.toggle("show");
+      // INFO MESSAGE
     }
   }
 
@@ -69,6 +76,11 @@ export default function Nav() {
               <option value="country-za">Z to A</option>
             </optgroup>
           </select>
+          <div>
+            <Link to="/account">
+              <button>Account</button>
+            </Link>
+          </div>
           <div className="dropdown" id="login-dropdown">
             <a
               href="#"

@@ -7,7 +7,8 @@ const UserSchema = new Schema({
 	lastName: { type: String, required: true},
 	phone: { type: Number, required: true},
 	createdAt: { type: Date },
-	password: {type: String}
+	password: {type: String},
+	deposit: { type: Number }
 })
 
 // Create a virtual with its full name

@@ -26,6 +26,64 @@ router.get("/", (req, res) => {
 	res.send("Siker")
 })
 
+router.get("/info/:id", async (req, res) => {
+	const id = req.params.id
+	const user = await User.findById(id)
+	if(user) {
+		return res.status(200).json(user)
+	} else {
+		console.log("Error getting the account");
+		return res.status(500).json({})
+	}
+	
+})
+
+router.patch("/update/:id", async (req, res) => {
+	const id = req.params.id
+	const user = await User.findByIdAndUpdate(id, {email: req.body.email, firstName: req.body.first, lastName: req.body.last, phone: req.body.phone}, {new: true})
+	return res.status(200).json(user)
+})
+
+router.patch("/deposit/:id", async (req, res) => {
+	const id = req.params.id
+
+	try {
+		const user = await User.findById(id)
+
+		if (user){
+			let updateProp;
+			
+			if (user.deposit){
+				console.log("updated deposit key")
+				updateProp = {$set: { deposit: user.deposit + parseInt(req.body.deposit)}}
+			} else {
+				console.log("added deposit key");
+				updateProp = {$set: { deposit: parseInt(req.body.deposit)}}
+			}
+
+			const updateAccount = await User.updateOne({ _id: id}, updateProp)
+
+			if(updateAccount.acknowledged) {
+				return res.status(200).json({message: "Update successful"})
+			} else {
+				console.log("update didn't modify");
+				return res.status(500).json({message: "Update failed"})
+			}
+		} 
+	} catch (error) {
+		console.error("Error during update", error)
+		return res.status(500).json({error: "Internal server error", details: error.message})
+	}
+	/*if (user.deposit){
+		const resp = await User.updateOne({_id: id}, {$set: { deposit: user.deposit + parseInt(req.body.deposit)}})
+		return res.status(200).json(resp)
+	} else {
+		console.log("no deposit key yet");
+		const resp = await User.updateOne({_id: id}, {$set: { deposit: req.body.deposit}})
+		return res.status(200).json(resp)
+	}*/
+})
+
 // to make a registration
 // i need the model's required information sent by req.body
 router.post("/register",
