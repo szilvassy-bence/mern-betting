@@ -25,6 +25,8 @@ app.get("/", (req, res)=> {
 	res.send("Sports Database");
 })
 
+
+
 async function main() {
   const database = "sportDb";
   await connect();

@@ -154,13 +154,10 @@ router.post("/register",
 						.catch(err => {
 							console.log(err, "Error creating the user");
 							return res.status(500).json(err)
-
 						})
 				}
 			});
 		});
-
-		console.log(hashedPassword);
 
 
 	})
@@ -182,24 +179,23 @@ router.post("/login", async (req, res) => {
 		} 
 
 		const saltRounds = 10;
-		bcrypt.genSalt(saltRounds, function (err, salt) {
-			bcrypt.hash(password, salt, function (err, hash) {
-				if (err) {
-					console.error(err);
-				} else {
-					const hashedPassword = hash;
-					console.log(user.password, hashed);
-					
-					if (user.password === hashedPassword) {
-						console.log("success");
-						const id = user._id
-						return res.status(200).json({id})
-					} else {
-						return res.status(401).json({ error: 'Invalid email or password.' });
-					}
-				}
-			})
-		})
+
+		// Assuming user.password contains the stored hashed password
+		bcrypt.compare(password, user.password, function (err, result) {
+			if (err) {
+				console.error(err);
+				return res.status(500).json({ error: 'Internal Server Error' });
+			}
+
+			if (result) {
+				console.log('Password match');
+				const id = user._id;
+				return res.status(200).json({ id });
+			} else {
+				console.log('Password does not match');
+				return res.status(401).json({ error: 'Invalid email or password.' });
+			}
+		});
 	} catch (error) {
 		console.log(error.message);
 		res.status(500).json({})
