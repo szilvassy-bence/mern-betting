@@ -10,7 +10,7 @@ const UserAccount = () => {
   const [newLast, setNewLast] = useState("")
   const [newPhone, setNewPhone] = useState("")
   const [deposited, setDeposited] = useState(false)
-  const { user } = useContext(SearchContext)
+  const { user, funds, setFunds } = useContext(SearchContext)
 
 
   const submitDeposit = (e) => {
@@ -23,6 +23,7 @@ const UserAccount = () => {
       .then(resp => resp.json())
       .then(data => {
         console.log(data);
+        setFunds(funds + parseInt(depositValue))
         setDeposited(!deposited)
         setDepositValue("")
       })

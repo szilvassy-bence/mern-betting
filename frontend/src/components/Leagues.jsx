@@ -14,7 +14,7 @@ export default function Leagues () {
   const [currentPage, setCurrentPage] = useState(null);
   const [firstIndex, setFirstIndex] = useState(null);
   const [displayedLeagues, setDisplayedLeagues]= useState(null);
-  const leaguesPerPage = 30;
+  const leaguesPerPage = 10;
 
   const { search, sort } = useContext(SearchContext);
 
