@@ -1,13 +1,15 @@
 import express from "express";
 import { body, validationResult } from "express-validator";
-const router = express.Router();
+import bcrypt from "bcryptjs";
 import User from "../models/UserModel.js"
+const router = express.Router();
 
 
 // WHAT TO IMPLEMENT
-// Cryping the password
+// Crypting the password
 // checking authorization with token, by creating a Middleware
 // authentication and authorization JWT
+// SESSION OR TOKEN for auth. & author
 // error handling with a middleware that also logs errors
 /* const myMiddleware = (req, res, next) => {
   if (req.headers.authorization === 'secret-token') {
@@ -18,6 +20,9 @@ import User from "../models/UserModel.js"
     res.status(403).send('Forbidden');
   }
 }; */
+
+
+
 
 
 
@@ -39,7 +44,7 @@ router.post("/register",
 		.isLength({min:2})
 		.matches(/^[a-zA-Z][a-zA-z0-9-_]{2,23}$/),
 		
-	body("email", "Email must be a valid email address.")
+	body("email", "Email must be a valid email address, or email is already in use")
 		.trim()
 		.isEmail()
 		.custom(async value => {
@@ -53,11 +58,11 @@ router.post("/register",
 
 	body("phone", "Phone must not be empty.")
 		.trim()
-		.isLength({min:1}),
+		.isLength({min:7}),
 
 	body("password", "Password must be at least 8 characters and include at least one small letter, one capital letter, and one number, and one special characters from: !@#$%.")
 		.trim()
-		.isLength({min:1})
+		.isLength({min:8})
 		.matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/),
 
 	async (req, res) => {
@@ -65,23 +70,41 @@ router.post("/register",
 		const data = req.body;
 		data.createdAt = new Date();
 
-    // Extract the validation errors from a request.
-    const errors = validationResult(req);
-		console.log(errors);
+		const password = data.password;
+		console.log(password);
+		
+		// Extract the validation errors from a request.
+		const errors = validationResult(req);
+		//console.log(errors);
 
 		if (!errors.isEmpty()) {
 			console.log("Errors is not empty:", errors);
-			return res.status(500).json({errors})
+			return res.status(500).json(errors)
 		}
 
+		const saltRounds = 10;
+		bcrypt.genSalt(saltRounds, function (err, salt) {
+			bcrypt.hash(password, salt, function (err, hash) {
+				if (err) {
+					console.error(err);
+				} else {
+					data.password = hash;
 
-		try {
-			const user = await User.create(data);
-			res.status(200).json(user)
-		} catch(err) {
-			console.log(err, "Error creating the user");
-			return res.status(500).json(err)
-		}
+					// CREATE THE USER
+					User.create(data)
+						.then(user => res.status(200).json(user))
+						.catch(err => {
+							console.log(err, "Error creating the user");
+							return res.status(500).json(err)
+
+						})
+				}
+			});
+		});
+
+		console.log(hashedPassword);
+
+
 	})
 
 // TO CHECK THE LOGIN INFORMATION
@@ -97,19 +120,31 @@ router.post("/login", async (req, res) => {
 		const user = await User.findOne({ email: email })
 		
 		if (!user) {
-			throw new Error("Email not found. Try again.")		
+			return res.status(401).json({ error: 'Invalid email or password.' });
 		} 
-		if (user.password === password) {
-			console.log("success");
-			const id = user._id
-			res.status(200).json({id})
-		} else {
-			res.status(401).json({ error: 'Invalid email or password.' });
-		}
+
+		const saltRounds = 10;
+		bcrypt.genSalt(saltRounds, function (err, salt) {
+			bcrypt.hash(password, salt, function (err, hash) {
+				if (err) {
+					console.error(err);
+				} else {
+					const hashedPassword = hash;
+					console.log(user.password, hashed);
+					
+					if (user.password === hashedPassword) {
+						console.log("success");
+						const id = user._id
+						return res.status(200).json({id})
+					} else {
+						return res.status(401).json({ error: 'Invalid email or password.' });
+					}
+				}
+			})
+		})
 	} catch (error) {
 		console.log(error.message);
-		const {message} = error
-		res.status(500).json({message})
+		res.status(500).json({})
 	}
 })
 
