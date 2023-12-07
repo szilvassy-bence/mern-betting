@@ -85,6 +85,9 @@ router.patch("/deposit/:type/:id", async (req, res) => {
 					$set: { deposit: parseInt(req.body.deposit)},
 					$push: { bets: req.body.bet }
 				}
+			} else if(user.deposit && type === "jack"){
+				console.log("updated deposit key")
+				updateProp = {$set: { deposit: parseInt(req.body.deposit)}}
 			} else if (user.deposit){
 				console.log("updated deposit key")
 				updateProp = {$set: { deposit: user.deposit + parseInt(req.body.deposit)}}

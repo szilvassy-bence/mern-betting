@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { SearchContext } from "../contexts/SearchContext";
 import DealCards from "./blackjack/DealCards";
 import PlayerRound from "./blackjack/PlayerRound";
 import DealerRound from "./blackjack/DealerRound";
@@ -16,8 +17,48 @@ export default function Blackjack() {
     const [playerCardValues, setPlayerCardValues] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
+    const { setFunds, funds, user } = useContext(SearchContext)
+
+    function handleBet(){
+        console.log(funds)
+        if(betAmount <= funds){
+            setFunds(funds - betAmount)
+            SetGameStage('deal')
+        } else {
+            window.alert(`You do not have enough money. You can place a maximum of ${funds} bet!`);
+        }
+    }
+
+    async function handleFinalResult(winMoney){
+        const bet = await fetch(`/api/user/deposit/jack/${user.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              deposit: funds + betAmount + winMoney,
+            })
+          })
+
+          setFunds(funds + betAmount + winMoney)
+          //console.log(typeof funds, typeof betAmount, typeof winMoney)
+
+          if(bet.status === 200){
+            console.log("Successful patch");
+          } else {
+            console.log("Problem fetching");
+          } 
+    
+          if (bet.status === 200) {
+            console.log("Successful post method");
+          } else {
+            console.log("Problem sending bet");
+          }
+    }
+
+
     function handleSurrender() {
         console.log(123)
+        const moneyMinus = Math.round((-betAmount)/2)
+        handleFinalResult(moneyMinus)
         setBlackjackState('surrender')
         setShowModal(true)
     }
@@ -29,6 +70,17 @@ export default function Blackjack() {
         setDeckId(deck)
         setPlayerCards([dealtCards.cards[0], dealtCards.cards[2]]);
         setDealerCards([dealtCards.cards[1], dealtCards.cards[3]]);
+        if(blackjack === 'draw-blackjack'){
+            setFunds(funds + betAmount)
+        } 
+        if(blackjack === 'player-blackjack'){
+            const moneyWon = (betAmount) * 2
+            handleFinalResult(moneyWon)
+        }
+        if(blackjack === 'dealer-blackjack'){
+            const moneyLost = -betAmount
+            handleFinalResult(moneyLost)
+        }
         //blackjack === 'continue' ? SetGameStage('player-round') : setBlackjackState(blackjack);
         if (blackjack === 'continue') {
             SetGameStage('player-round');
@@ -61,9 +113,13 @@ export default function Blackjack() {
     const handlePlayerRoundLogic = (playerCardValue) => {
         setPlayerCardValues(playerCardValue);
         if (playerCardValue === 21) {
+          const moneyWon = (betAmount) * 2
+          handleFinalResult(moneyWon)
           setBlackjackState('player-blackjack');
         }
         if (playerCardValue > 21) {
+          const moneyLost = -betAmount
+          handleFinalResult(moneyLost)
           setBlackjackState('dealer-normal');
         }
       };
@@ -158,16 +214,27 @@ export default function Blackjack() {
       
         // Logic to check blackjackState based on updated values
         if (cardValues === 21) {
+          const moneyLost = -betAmount
+          handleFinalResult(moneyLost)
           setBlackjackState('dealer-blackjack');
         } else if (cardValues > 21) {
+          const moneyWon = (betAmount) * 2
+          handleFinalResult(moneyWon)
           setBlackjackState('dealer-gameover');
         } else if (cardValues > playerCardValues) {
+          const moneyLost = -betAmount
+          handleFinalResult(moneyLost)
           setBlackjackState('player-gameover');
         } else if (cardValues < playerCardValues) {
+          const moneyWon = (betAmount) * 2
+          handleFinalResult(moneyWon)
           setBlackjackState('player-closer');
         } else if (cardValues === playerCardValues) {
+          setFunds(funds + betAmount)
           setBlackjackState('draw-normal');
         } else {
+          const moneyWon = (betAmount) * 2
+          handleFinalResult(moneyWon)
           setBlackjackState('dealer-gameover');
         }
       };
@@ -198,8 +265,9 @@ export default function Blackjack() {
             {gameStage === 'placeBet' && (
                 <div className="middle">
                     <h2 className="bl-h2">Place your bet to start the game!</h2>
-                    <input className="bl-input" id='user-bet' type='number' placeholder='0' min='0' value={betAmount} onChange={(e) => SetBetAmount(e.target.value)}></input>
-                    <button onClick={() => SetGameStage('deal')}>Place bet!</button>
+                    <input className="bl-input" id='user-bet' type='number' placeholder='0' min='0' max={funds} value={betAmount} 
+                    onChange={(e) => SetBetAmount(parseInt(e.target.value))}></input>
+                    <button onClick={()=>handleBet()}>Place bet!</button>
                 </div>
             )}
             {gameStage === 'deal' && <DealCards bet={betAmount} handleFirstDealEnded={handleFirstDealEnded}/>}
