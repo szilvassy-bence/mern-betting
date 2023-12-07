@@ -258,8 +258,15 @@ export default function Blackjack() {
         <div className="bl-starter">
             {gameStage === 'start' && (
                 <div className="middle">
-                    <h2 className="bl-h2">Press start if you are ready to play Blackjack!</h2>
-                    <button onClick={() => SetGameStage('placeBet')}>Start Blackjack!</button>
+                    { user ? 
+                    <>
+                        <h2 className="bl-h2">Press start if you are ready to play Blackjack!</h2>
+                        <button onClick={() => SetGameStage('placeBet')}>Start Blackjack!</button>
+                    </>
+                    : 
+                    <>
+                    <h2 className="bl-h2">Please log in to play Blackjack!</h2>
+                    </>}
                 </div>
             )}
             {gameStage === 'placeBet' && (
