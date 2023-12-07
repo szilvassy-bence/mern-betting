@@ -10,7 +10,7 @@ export default function Nav() {
   const dropdownRef = useRef(0);
 
   const location = useLocation();
-
+  const isLeaguesPath = location.pathname.startsWith('/leagues');
 
   function onChangeInput(e) {
     setSearch(e.target.value);
@@ -60,13 +60,13 @@ export default function Nav() {
           <Link to="/">
             <button type="button">Home Page</button>
           </Link>
-          {location.pathname !== '/casino/blackjack' && <input
+          {isLeaguesPath && (<input
             className="form-control w-25"
             type="text"
             onChange={onChangeInput}
             placeholder="Search..."
-          />}
-          {location.pathname !== '/casino/blackjack' && <select
+          />)}
+          {isLeaguesPath && (<select
             onChange={onChangeSelect}
             className="form-select w-25"
             name="nav-select"
@@ -80,7 +80,7 @@ export default function Nav() {
               <option value="country-az">A to Z</option>
               <option value="country-za">Z to A</option>
             </optgroup>
-          </select>}
+          </select>)}
           <div>
           { 
               user ? (
