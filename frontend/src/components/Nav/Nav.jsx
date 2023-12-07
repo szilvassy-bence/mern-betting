@@ -84,12 +84,14 @@ export default function Nav() {
             </optgroup>
           </select>}
           <div>
-            <label>Funds:</label>
-            { 
+          { 
               user ? (
-                <p>{funds}</p>
+                <>
+                <h3 className="middle">Funds:</h3>
+                <h3 className="middle">{funds}</h3>
+                </>
               ) : (
-                <p>0</p>
+                null
               )
             }
           </div>
