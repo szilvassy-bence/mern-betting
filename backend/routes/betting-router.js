@@ -4,8 +4,8 @@ import Bet from "../models/BetModel.js"
 
 
 const liveScoreKeys = {
-	key: "jTOINGjDJbOFpJbb",
-	secretKey: "PROUA1CySxYZqpeJi2s5ILJsWx7mhix7"
+	key: "dp2OvQ4IIAp0ZnO4",
+	secretKey: "Zol2nuAqEPGhckmqKpffgkYYUnZUKNYK"
 }
 
 // GET a league
