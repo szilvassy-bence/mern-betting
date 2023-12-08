@@ -11,7 +11,7 @@ const liveScoreKeys = {
 // GET a league
 router.get("/leagues", async (req, res) => {
 	try {
-		const resp = await fetch(`https://livescore-api.com/api-client/competitions/list.json?&key=jTOINGjDJbOFpJbb&secret=PROUA1CySxYZqpeJi2s5ILJsWx7mhix7`);
+		const resp = await fetch(`https://livescore-api.com/api-client/competitions/list.json?&key=${liveScoreKeys.key}&secret=${liveScoreKeys.secretKey}`);
 		const list = await resp.json();
 		const leagues = list.data.competition.filter(comp => comp.is_league === "1" && comp.tier === "1")
 		return res.status(200).json(leagues)
